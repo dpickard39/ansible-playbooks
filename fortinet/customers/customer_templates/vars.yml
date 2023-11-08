@@ -9,6 +9,7 @@ vdom: "root"
 ansible_httpapi_use_ssl: yes
 ansible_httpapi_validate_certs: no
 ansible_httpapi_port: 10443 # Default port is 443
+script_path: '/tmp/fgt.shell.task'
 
 ## Domain Information ##
 ad_domain: "mydomain.com"

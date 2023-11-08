@@ -3,6 +3,7 @@
 - hosts: 
   - localhost
   vars_files:
+    - "customers/{{ customer }}/vars.yml"
     - "customers/{{ customer }}/ipsec_vars.yml"
   vars:
   tasks:
