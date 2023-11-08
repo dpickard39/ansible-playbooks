@@ -1,2 +1,6 @@
+# Do not sync these files
 .DS_Store
 fortinet/certificates/*
+
+#Exceptions
+!fortinet/certificates/.gitkeep
