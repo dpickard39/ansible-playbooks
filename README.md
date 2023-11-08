@@ -1,3 +1,2 @@
-# meraki-ansible
-#
-# This is my private repository for Ansible playbooks.
+Welcome to my ansible-playbooks collection. I have been working on these scripts off and on for the past 5 years.
+In this repository you will find a .devcontainer folder. This will allow you to build a docker environment that has all the requirements that my scripts require.

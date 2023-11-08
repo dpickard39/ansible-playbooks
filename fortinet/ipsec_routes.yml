@@ -1,11 +1,13 @@
+---
+
 - hosts: fortigates
   collections:
     - fortinet.fortios
   connection: httpapi
   gather_facts: no
   vars_files:
-    - vars.yml
-    - ipsec_vars.yml
+    - "customers/{{ customer }}/vars.yml"
+    - "customers/{{ customer }}/ipsec_vars.yml"
   vars:
   tasks:
     - name: Check if route already exists

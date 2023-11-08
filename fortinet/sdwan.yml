@@ -1,9 +1,11 @@
+---
+
 - hosts: fortigates
   collections:
     - fortinet.fortios
   connection: httpapi
   vars_files:
-    - vars.yml
+    - "customers/{{ customer }}/vars.yml"
     - "customers/{{ customer }}/interface_settings.yml"
   vars:
   tasks:

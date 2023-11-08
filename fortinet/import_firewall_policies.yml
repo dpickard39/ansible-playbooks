@@ -1,3 +1,5 @@
+---
+
 - hosts: fortigates
   collections:
     - fortinet.fortios
@@ -5,7 +7,7 @@
   connection: httpapi
   gather_facts: no
   vars_files:
-    - vars.yml
+    - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
     - name: Register firewall policies from CSV file

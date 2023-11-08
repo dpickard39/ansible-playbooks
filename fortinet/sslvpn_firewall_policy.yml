@@ -7,7 +7,7 @@
   connection: httpapi
   gather_facts: no
   vars_files:
-    - vars.yml
+    - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
     - name: Create firewall policy to allow VPN access to internal

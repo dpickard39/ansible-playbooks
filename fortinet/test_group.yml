@@ -1,7 +1,8 @@
+---
 - hosts: 
   - localhost
   vars_files:
-    - ipsec_vars.yml
+    - "customers/{{ customer }}/ipsec_vars.yml"
   vars:
   tasks:
   - name: Register Allowed URLs from CSV file
