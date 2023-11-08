@@ -1,0 +1,180 @@
+---
+- name: Provisioning a Virtual Machine on VMware from an existing template.
+  hosts: vcenter
+  connection: ssh
+  gather_facts: no
+
+  vars_prompt:
+
+   - name: "vm_templ"
+     prompt: "Which OS you need? CentOS 8.2 (centos82template) or Ubuntu 18.04 (ubuntu1804template)"
+     private: no
+
+   - name: "master_vm_name"
+     prompt: "Name of the virtual Master virtual machine"
+     private: no
+
+   - name: "worker1_vm_name"
+     prompt: "Name of the Worker 1 virtual machine"
+     private: no
+
+   - name: "worker2_vm_name"
+     prompt: "Name of the Worker 2 virtual machine"
+     private: no
+
+   - name: "master_vm_ip"
+     prompt: "Master Virtual Machine IP Address"
+     private: no
+
+   - name: "worker1_vm_ip"
+     prompt: "Worker1 Virtual Machine IP Address"
+     private: no
+
+   - name: "worker2_vm_ip"
+     prompt: "Worker2 Virtual Machine IP Address"
+     private: no
+
+   - name: "vm_smask"
+     prompt: "Subnetmask for Virtual Machine"
+     private: no
+
+   - name: "vm_gw"
+     prompt: "Gateway of the Virtual Machine"
+     private: no
+
+   - name: "net_name"
+     prompt: "Port Group Name, VLAN, Network Name"
+     private: no
+
+   - name: "vm_memory"
+     prompt: "Memory size required?"
+     private: no
+
+  vars:
+    vc_name: "vcenter.linuxsysadmins.local"
+    vc_user: "administrator@vsphere.local"
+    vc_pass: "xxxxxxxxxxxxxx"
+    dc: "homelab-dc"
+    cls: "homelab-cls" 
+    datast: "vsanDatastore"
+    disk_size: 100
+    vm_dns: 192.168.0.21
+    notes: This VM Provisioned using ansible.
+    dumpfacts: False
+  tasks:
+    - name: Clone the {{ vm_templ }} Virtual machine from an existing template.
+      vmware_guest:
+        validate_certs: False
+        hostname: "{{ vc_name }}"
+        username: "{{ vc_user }}"
+        password: "{{ vc_pass }}"
+        cluster: "{{ cls }}"
+        datacenter: "{{ dc }}"
+        folder: "/{{ dc }}/vm"
+        name: "{{ master_vm_name }}"
+        template: "{{ vm_templ }}"
+        disk:
+          - size_gb: "{{ disk_size }}"
+            type: thin
+            datastore: "{{ datast }}"
+        networks:
+        - name: "{{ net_name }}"
+          type: static
+          device_type: vmxnet3
+          ip: "{{ master_vm_ip }}"
+          netmask: "{{ vm_smask }}"
+          gateway: "{{ vm_gw }}"
+          dns_servers: "{{ vm_dns }}"
+        hardware:
+          memory_mb: "{{ vm_memory }}"
+        wait_for_ip_address: true
+        customization:
+          domain: linuxsysadmins.local
+          dns_servers:
+          - 192.168.0.21
+          - 192.168.0.22
+          dns_suffix:
+          - linuxsysadmins.local
+        state: present
+      register: created_master_vm
+
+    - debug:
+         var: created_master_vm.instance.ipv4
+
+    - name: Clone the {{ vm_templ }} Virtual machine from an existing template.
+      vmware_guest:
+        validate_certs: False
+        hostname: "{{ vc_name }}"
+        username: "{{ vc_user }}"
+        password: "{{ vc_pass }}"
+        cluster: "{{ cls }}"
+        datacenter: "{{ dc }}"
+        folder: "/{{ dc }}/vm"
+        name: "{{ worker1_vm_name }}"
+        template: "{{ vm_templ }}"
+        disk:
+          - size_gb: "{{ disk_size }}"
+            type: thin
+            datastore: "{{ datast }}"
+        networks:
+        - name: "{{ net_name }}"
+          type: static
+          device_type: vmxnet3
+          ip: "{{ worker1_vm_ip }}"
+          netmask: "{{ vm_smask }}"
+          gateway: "{{ vm_gw }}"
+          dns_servers: "{{ vm_dns }}"
+        hardware:
+          memory_mb: "{{ vm_memory }}"
+        wait_for_ip_address: true
+        customization:
+          domain: linuxsysadmins.local
+          dns_servers:
+          - 192.168.0.21
+          - 192.168.0.22
+          dns_suffix:
+          - linuxsysadmins.local
+        state: present
+      register: created_worker1_vm
+
+    - debug:
+         var: created_worker1_vm.instance.ipv4
+
+    - name: Clone the {{ vm_templ }} Virtual machine from an existing template.
+      vmware_guest:
+        validate_certs: False
+        hostname: "{{ vc_name }}"
+        username: "{{ vc_user }}"
+        password: "{{ vc_pass }}"
+        cluster: "{{ cls }}"
+        datacenter: "{{ dc }}"
+        folder: "/{{ dc }}/vm"
+        name: "{{ worker2_vm_name }}"
+        template: "{{ vm_templ }}"
+        disk:
+          - size_gb: "{{ disk_size }}"
+            type: thin
+            datastore: "{{ datast }}"
+        networks:
+        - name: "{{ net_name }}"
+          type: static
+          device_type: vmxnet3
+          ip: "{{ worker2_vm_ip }}"
+          netmask: "{{ vm_smask }}"
+          gateway: "{{ vm_gw }}"
+          dns_servers: "{{ vm_dns }}"
+        hardware:
+          memory_mb: "{{ vm_memory }}"
+        wait_for_ip_address: true
+        customization:
+          domain: linuxsysadmins.local
+          dns_servers:
+          - 192.168.0.21
+          - 192.168.0.22
+          dns_suffix:
+          - linuxsysadmins.local
+        state: present
+      register: created_worker2_vm
+
+    - debug:
+         var: created_worker2_vm.instance.ipv4

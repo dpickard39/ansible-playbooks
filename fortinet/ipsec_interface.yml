@@ -1,0 +1,47 @@
+- hosts: 
+    - fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+    - ipsec_vars.yml
+  vars:
+  tasks:
+  - name: Configure IPSec Phase 1 Interface
+    fortios_vpn_ipsec_phase1_interface:
+      vdom: "{{ vdom }}"
+      state: present
+      access_token: "{{ fortios_access_token }}"
+      vpn_ipsec_phase1_interface:
+        name: "{{ site1_name }}"
+        interface: "wan1"
+        ike_version: "2"
+        keylife: "28800"
+        peertype: "any"
+        nattraversal: "disable"
+        proposal: "aes256gcm-prfsha256"
+        dhgrp: "21"
+        remote_gw: "{{ site1_ip }}"
+        psksecret: "{{ pre_shared_key }}"
+    when: peer_type == "Fortinet"
+    
+  - name: Configure IPSec Phase 2 Interface
+    fortios_vpn_ipsec_phase2_interface:
+      vdom: "{{ vdom }}"
+      state: present
+      access_token: "{{ fortios_access_token }}"
+      vpn_ipsec_phase2_interface:
+        name: "{{ site1_name }}"
+        phase1name: "{{ site1_name }}"
+        proposal: "aes256gcm"
+        dhgrp: "21"
+        keylifeseconds: "3600"
+        src_addr_type: "name"
+        dst_addr_type: "name"
+        src_name: "{{ site1_name }}_VPN_local"
+        dst_name: "{{ site1_name }}_VPN_remote"
+        keepalive: "enable"
+    when: peer_type == "Fortinet"
+    

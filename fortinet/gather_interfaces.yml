@@ -1,0 +1,14 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: fact gathering with filters
+      fortios_configuration_fact:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        selector: 'system_interface'

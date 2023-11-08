@@ -1,0 +1,41 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Configure Webfilter Policy Settings
+      fortios_antivirus_profile:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        antivirus_profile: 
+          name: "HTMS Antivirus"
+          comment: "High Touch generated Antivirus"
+          analytics_db: "enable"
+          av_block_log: "enable"
+          av_virus_log: "enable"
+          http:
+            av_scan: "block"
+            outbreak-prevention: "block"
+          ftp:
+            av_scan: "block"
+            outbreak-prevention: "block"
+          imap:
+            av_scan: "block"
+            outbreak-prevention: "block"
+          pop3:
+            av_scan: "block"
+            outbreak-prevention: "block"
+            executables: "virus"
+          smtp:
+            av_scan: "block"
+            outbreak-prevention: "block"
+          cifs:
+            av_scan: "block"
+            outbreak-prevention: "block"
+          outbreak-prevention-archive-scan: "disable"
+          external-blocklist-enable-all: "enable"

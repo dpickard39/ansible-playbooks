@@ -1,0 +1,43 @@
+---
+## Need to update script to use variables and custom vars file.
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Create firewall policy to allow VPN access to internal
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        firewall_policy:
+          name: "ssl.root --> internal"
+          action: "accept"
+          srcintf:
+           -
+            name: "ssl.root"
+          dstintf:
+           -
+            name: "internal"
+          srcaddr:
+           -
+            name: "SSLVPN_TUNNEL_ADDR1"
+          dstaddr:
+           -
+            name: "internal"
+          schedule: "always"
+          service:
+           -
+            name: "ALL"
+          logtraffic: "all"
+          logtraffic_start: "enable"
+          nat: "enable"
+          groups:
+           -
+            name: "SSLVPN_Users"
+          policyid: "15"

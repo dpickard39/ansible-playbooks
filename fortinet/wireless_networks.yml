@@ -1,0 +1,159 @@
+---
+- hosts: ICT-PELLA-SALINA-60F
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: yes
+  vars_files:
+    - vars.yml
+    - "customers/{{ customer }}/wireless_settings.yml"
+  vars:
+  tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ item.passphrase }}"
+      with_list: "{{ wireless_network }}"
+    - name: Configure Wireless SSID in tunnel mode and WPA2-PSK
+      fortios_wireless_controller_vap:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        wireless_controller_vap:
+          name: "{{ item.ssid }}"
+          ssid: "{{ item.ssid }}"
+          broadcast_ssid: "{{ item.broadcast }}"
+          security: "{{ item.security }}"
+          passphrase: "{{ item.passphrase }}"
+          pmf: "{{ item.pmf }}"
+          schedule: 
+            - name: "{{ item.schedule }}"
+      with_list: "{{ wireless_network }}"
+      when: 
+        - item.security  == "wpa2-only-personal"
+        - item.type == "tunnel"
+
+    - name: Configure Wireless SSID in bridge mode and WPA2-PSK
+      fortios_wireless_controller_vap:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        wireless_controller_vap:
+          name: "{{ item.ssid }}"
+          ssid: "{{ item.ssid }}"
+          broadcast_ssid: "{{ item.broadcast }}"
+          security: "{{ item.security }}"
+          passphrase: "{{ item.passphrase }}"
+          pmf: "{{ item.pmf }}"
+          schedule: 
+            - name: "{{ item.schedule }}"
+          vlanid: "{{ item.vlan_subnet }}"
+          local_bridging: "enable"
+      with_list: "{{ wireless_network }}"
+      when: 
+        - item.security  == "wpa2-only-personal"
+        - item.type == "bridge"
+
+    - name: Configure Wireless Virtual Access Points with WPA3-SAE-Transition
+      fortios_wireless_controller_vap:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        wireless_controller_vap:
+          name: "{{ item.ssid }}"
+          ssid: "{{ item.ssid }}"
+          broadcast_ssid: "{{ item.broadcast }}"
+          security: "{{ item.security }}"
+          passphrase: "{{ item.passphrase }}"
+          sae_password: "{{ item.passphrase }}"
+          pmf: "{{ item.pmf }}"
+          schedule:
+            - name:  "{{ item.schedule }}"
+      with_list: "{{ wireless_network }}"
+      when: 
+        - item.security == "wpa3-sae-transition"
+        - item.type == "tunnel"
+
+    - name: Configure Wireless Virtual Access Points with WPA3-SAE-Transition
+      fortios_wireless_controller_vap:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        wireless_controller_vap:
+          name: "{{ item.ssid }}"
+          ssid: "{{ item.ssid }}"
+          broadcast_ssid: "{{ item.broadcast }}"
+          security: "{{ item.security }}"
+          passphrase: "{{ item.passphrase }}"
+          sae_password: "{{ item.passphrase }}"
+          pmf: "{{ item.pmf }}"
+          schedule: 
+            - name: "{{ item.schedule }}"
+          vlanid: "{{ item.vlan_subnet }}"
+          local_bridging: "enable"
+      with_list: "{{ wireless_network }}"
+      when: 
+        - item.security == "wpa3-sae-transition"
+        - item.type == "bridge"
+
+    - name: Configure Wireless Interfaces
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ item.name }}"
+          ip: "10.{{ site_id }}.{{ item.vlan_subnet }}.1/24"
+          allowaccess: "{{ item.allow_access }}"
+          device_identification: "enable"
+          role: "lan"
+      with_list: "{{ wireless_network }}"
+      when: item.type == "tunnel"
+
+    - name: Create DHCP Server for wireless
+      fortios_system_dhcp_server:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_dhcp_server:
+          id: "{{ item.vlan_subnet }}"
+          domain: "{{ item.domain }}"
+          default_gateway: "10.{{ site_id }}.{{ item.vlan_subnet }}.{{ item.gateway }}"
+          netmask: "255.255.255.0"
+          interface: "{{ item.name }}"
+          ip_range:
+          -
+            start_ip: "10.{{ site_id }}.{{ item.vlan__subnet }}.{{ item.start_ip }}"
+            end_ip: "10.{{ site_id }}.{{ item.vlan_subnet }}.{{ item.end_ip }}"
+          lease_time: "{{ item.lease_time }}"
+          dns_server1: "{{ dns_server1 }}"
+          dns_server2: "{{ dns_server2 }}"
+          server_type: "regular"
+          status: enable
+      with_list:  "{{ wireless_network }}"
+      when: 
+        - item.dhcp_type == "scope"
+        - item.type == "tunnel"
+
+    # - name: Add Bridged SSIDs to the Forti-AP Profile
+    #   fortios_wireless_controller_wtp_profile:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     wireless_controller_wtp_profile:
+    #       name: "FAP431G-default"
+    #       radio_1:
+    #         vap_all: "manual"
+    #         vaps:
+    #           - name: "{{ item.ssid }}"
+    #       radio_2:
+    #         val_all: "manual"
+    #         vaps:
+    #           - name: "{{ item.ssid }}"
+    #       radio_3:
+    #         vap_all: "manual"
+    #         vaps:
+    #           - name: "{{ item.ssid }}"
+    #   with_list: "{{ wireless_network }}"
+    #   when:
+    #     - item.type == "bridge"

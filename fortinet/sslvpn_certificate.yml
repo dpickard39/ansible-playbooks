@@ -1,0 +1,34 @@
+- hosts: localhost
+  vars_files:
+    - vars.yml
+    - ipsec_vars.yml
+  vars:
+  tasks:
+  - name: Prepare shell script
+    raw: |
+           cat > {{script_path }} << EOF_OUTER
+           # /bin/bash
+           # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+           # Optionally you can pass some parameters.
+           # The character `a` at second line below is to avoid post-login-banner barrier.
+           sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ fgt_host }} <<EOF
+           a
+           # ====================== Edit Your Commands Below =============================================
+           config vpn certificate local
+           edit '\$1'
+           set range global
+           set enroll-protocol acme2
+           set acme-domain '\$1'
+           set acme-email '\$2'
+           end
+           y
+           # ==============================================================================================
+           EOF
+           EOF_OUTER
+
+
+  - name: Execute script to create {{ vpn_domain }} certificate
+    raw: |
+           chmod +x {{ script_path }} && {{ script_path }} '{{ vpn_domain }}' '{{ acme_email }}'
+    args:
+      executable: /bin/bash

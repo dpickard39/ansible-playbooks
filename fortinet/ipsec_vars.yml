@@ -1,0 +1,17 @@
+# ======================== Below are crenditials to connect to Fortigate Device ========
+fgt_host: '10.0.180.1'
+fgt_user: 'your_ssh_user'
+fgt_pass: 'your_ssh_password'
+
+# ======================================================================================
+script_path: '/tmp/fgt.shell.task'
+
+site1_name: "SiteA"
+site1_ip: "192.168.1.100"
+site2_configure: true
+site2_name: "SiteB"
+site2_ip: "192.168.2.100"
+peer_type: "Fortinet"
+pre_shared_key: "your_pre_shared_key"
+
+

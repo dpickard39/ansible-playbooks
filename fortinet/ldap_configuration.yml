@@ -1,0 +1,44 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Configure LDAP Server
+      fortios_user_ldap:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        user_ldap:
+          name: "AD LDAP"
+          server: "{{ ldap_server_ip }}"
+          server_identity_check: "disable"
+          cnid: "sAMAccountName"
+          dn: "{{ ldap_dn }}"
+          type: "regular"
+          username: "{{ ldap_user }}"
+          password: "{{ ldap_pass }}"
+          secure: "{{ ldap_secure }}"
+          port: "{{ ldap_port }}"
+      when: sslvpn_auth_type == "ldap" or 
+            configure_ldap == "yes"
+    
+    - name: Greate User Group for SSLVPN Authentication
+      fortios_user_group:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        user_group:
+          name: "SSLVPN_Users"
+          match:
+           -
+            group_name: "CN=Usesrs,CN=Builtin,{{ ldap_dn }}"
+            id: "10"
+            server_name: "AD LDAP"
+          member:
+           - 
+            name: "AD LDAP"
+      when: sslvpn_auth_type == "ldap"

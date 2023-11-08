@@ -1,0 +1,46 @@
+---
+
+## Need to update to use custom vars file 
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no 
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Configure SSL-VPN
+      fortios_vpn_ssl_settings:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        vpn_ssl_settings:
+          authentication_rule:
+           -
+            groups: 
+             -
+              name: "SSLVPN_Users"
+            portal: "full-access"
+          port: "443"
+          servercert: "{{ vpn_domain }}"
+          tunnel_ip_pools:
+           -
+            name: "SSLVPN_TUNNEL_ADDR1"
+          tunnel_ipv6_pools:
+           -
+            name: "SSLVPN_TUNNEL_IPv6_ADDR1"
+          source_interface:
+           -
+            name: "wan1"
+          source_address:
+           -
+            name: "all"
+          source_address6:
+           -
+            name: "all"
+          default_portal: "full-access"
+          dns_server1: "{{ sslvpn_dns_server1 }}"
+          dns_suffix: "{{ ad_domain }}"
+

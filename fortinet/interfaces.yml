@@ -1,0 +1,85 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+    - "customers/{{ customer }}/interface_settings.yml"
+  vars:
+  tasks:
+    - name: Create Fortilink VLAN interfaces with DHCP Server Scope
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "fortilink"
+          auto_auth_extension_device: enable
+
+    - name: Create Fortilink VLAN interfaces with DHCP Server Scope
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ item.name }}"
+          ip: "10.{{ site_id }}.{{ item.vlan_id }}.1/24"
+          allowaccess: "{{ item.allow_access }}"
+          # auto_auth_extension_device: "{{ auto_auth_device }}"
+          device_identification: "enable"
+          role: "lan"
+          interface: "{{ item.parent_interface }}"
+          vlanid: "{{ item.vlan_id }}"
+          auto_auth_extension_device: "{{ item.auto_auth_device }}"
+      with_list: "{{ interfaces }}"
+      when:
+        - item.dhcp_type == "scope"
+
+    - name: Create Fortilink VLAN interfaces with DHCP Server Relay
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ item.name }}"
+          ip: "10.{{ site_id }}.{{ item.vlan_id }}.1/24"
+          allowaccess: "{{ item.allow_access }}"
+          dhcp_relay_service: "enable"
+          dhcp_relay_ip: "{{ item.relay_ip }}"
+          # auto_auth_extension_device: "{{ auto_auth_device }}"
+          device_identification: "enable"
+          role: "lan"
+          interface: "{{ item.parent_interface }}"
+          vlanid: "{{ item.vlan_id }}"
+          auto_auth_extension_device: "{{ item.auto_auth_device }}"
+      with_list: "{{ interfaces }}"
+      when:
+        - item.dhcp_type == "relay"
+
+    - name: Create DHCP Servers for Fortilink VLAN interfaces 
+      fortios_system_dhcp_server:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_dhcp_server:
+          id: "{{ item.vlan_id }}"
+          domain: "{{ item.domain }}"
+          default_gateway: "10.{{ site_id }}.{{ item.vlan_id }}.{{ item.gateway }}"
+          netmask: "255.255.255.0"
+          interface: "{{ item.name }}"
+          ip_range:
+          -
+            id: "{{ item.vlan_id }}"
+            start_ip: "10.{{ site_id }}.{{ item.vlan_id }}.{{ item.start_ip }}"
+            end_ip: "10.{{ site_id }}.{{ item.vlan_id }}.{{ item.end_ip }}"
+          lease_time: "{{ item.lease_time }}"
+          dns_server1: "{{ item.dns_server1 }}"
+          dns_server2: "{{ item.dns_server2 }}"
+          server_type: "regular"
+          status: enable
+      with_list:  "{{ interfaces }}"
+      when: item.dhcp_type == "scope"

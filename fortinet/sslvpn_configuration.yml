@@ -1,0 +1,21 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Update SSLVPN_TUNNEL_ADDR1 with SSLVPN Client IP Range
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "SSLVPN_TUNNEL_ADDR1"
+          type: "iprange"
+          start_ip: "{{ sslvpn_client_start_ip }}"
+          end_ip: "{{ sslvpn_client_end_ip }}"
+
+

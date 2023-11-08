@@ -1,0 +1,23 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no 
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Configure IPS-Sensor
+      fortios_ips_sensor:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        ips_sensor:
+          name: "HTMS Protect Client"
+          comment: "High Touch generated policy"
+          block_malicious_url: "enable"
+          entries:
+           -
+            id: "1"
+            location: "client"
+          scan_botnet_connections: "block"

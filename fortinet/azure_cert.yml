@@ -1,0 +1,46 @@
+---
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - vars.yml
+  vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 10443
+   subject: "Azure"
+  tasks:
+  # - name: Import Remote Certificate
+  #   fortios_monitor:
+  #     vdom:  "{{ vdom }}"
+  #     access_token: "{{ fortios_access_token }}"
+  #     enable_log: true
+  #     selector: 'import.vpn-certificate.remote'
+  #     params:
+  #       scope: "global"
+  #       file_content: "{{ azure_remote_cert }}"
+  #   register: certname
+
+  - name: Gather Certificates
+    fortios_monitor_fact:
+      vdom:  "{{ vdom }}"
+      access_token: "{{ fortios_access_token }}"
+      enable_log: true
+      selector: 'system_available-certificates'
+      params:
+        with_remote: true
+        with_ca: true
+        with_crl: false
+        find_all_references: false
+    register: certificates
+
+  - name: Filter Azure Certificate
+    debug:
+      msg: "{{ certificates }}"
+    
+
+  # - name: Save Output to File
+  #   local_action: copy content={{ certificates | to_nice_json }} dest=./ansible_facts.json
+
+

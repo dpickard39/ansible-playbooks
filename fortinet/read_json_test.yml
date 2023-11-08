@@ -1,0 +1,21 @@
+- hosts: localhost #fortigates
+  # collections:
+  #   - fortinet.fortios
+  # connection: httpapi
+  # gather_facts: no
+  # vars_files:
+  #   - vars.yml 
+  vars:
+    faps: "{{ lookup('file','forti_neighbors.json') | from_json }}"
+  tasks:
+    # - name: Create Fortilink VLAN interfaces with DHCP Server
+    #   fortios_system_interface:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     system_interface:
+    - name: Read JSON and print variable
+      debug:
+        msg: "{{ item.lldp[0].system_name }} - {{ item.lldp[0].port_id }}"
+      loop: "{{ faps.results }}"
+      

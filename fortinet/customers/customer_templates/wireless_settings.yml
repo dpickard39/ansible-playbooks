@@ -1,0 +1,72 @@
+---
+#############################################################################################################################
+##  Wireless Virtual Access Point Settings                                                                                 ##
+##                                                                                                                         ##
+##  name: Define the name of the interface, this is typically the same as the SSID, this will be used for interface name   ##
+##  ssid: Define the name of the SSID                                                                                      ##
+##  broadcast: Specifies if you want the SSID to broadcast, options: enable|disable                                        ##
+##  security: Define which security method, typically wpa3-sae-transition or wpa2-only-personal, wpa2 uses passphrase      ##
+##  wpa3-sae-transistion uses both passphrase and sae_passphrase. Other options:                                           ##
+##                                                                                                                         ##
+##  allow_access: use comma seperated list with no spaces, choices: ping, https, ssh, snmp, http, telnet, fgfm,            ##
+##  radius-acct, probe-response, fabric, ftm, speed-test, capwap                                                           ##
+##  dhcp_type: scope, relay                                                                                                ##
+##  start_ip: specify the 4th octect only, the rest of the ip is built by other variables.                                 ##
+##  end_ip: specify the 4th octect only, the rest of the ip is built by other variables.                                   ##
+##  gateway: specify the 4th octect only, the rest of the ip is built by other variables.                                  ##
+##  lease_time: specify number of seconds, common lengths, 604800 (1 Week), 28800 (8 hours, typical for wireless)          ##
+##  domain: specify the domain, used to append a dns-suffix                                                                ##
+##                                                                                                                         ##
+#############################################################################################################################
+
+## Planned chane is to incororate radius options
+
+platform: "431G"
+wireless_mode: "bridge" # Options: bridge|tunnel
+
+wireless_network:
+  - name: "your_name"
+    ## SSID Settings ##
+    ssid: "your_ssid"
+    broadcast: "enable"
+    security: "wpa3-sae-transition"
+    passphrase: "your_psk"
+    schedule: "always"
+    type: "bridge"
+    pmf: "optional"
+    ## Interface Settings ##
+    vlan_subnet: 14
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    device_identify: "enable"
+    ## DHCP Settings ##
+    dhcp_type: "scope"
+    start_ip: 10
+    end_ip: 254
+    gateway: 1
+    lease_time: 86400
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"
+
+  - name: "your_name"
+    ## SSID Settings ##
+    ssid: "your_ssid"
+    broadcast: "enable"
+    security: "wpa2-only-personal"
+    passphrase: "your_psk"
+    schedule: "always"
+    type: "bridge"
+    pmf: "disable"
+    ## Interface Settings ##
+    vlan_subnet: 14
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    device_identify: "enable"
+    ## DHCP Settings ##
+    dhcp_type: "scope"
+    start_ip: 10
+    end_ip: 254
+    gateway: 1
+    lease_time: 86400
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"

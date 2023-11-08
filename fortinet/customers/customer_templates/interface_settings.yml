@@ -1,0 +1,78 @@
+---
+########################################################################################################################
+##  Fortilink VLAN interface settings                                                                                 ##
+##                                                                                                                    ##
+##  vlan_id: 2-4086                                                                                                   ##
+##  allow_access: use comma seperated list with no spaces, choices: ping, https, ssh, snmp, http, telnet, fgfm,       ##
+##  radius-acct, probe-response, fabric, ftm, speed-test, capwap                                                      ##
+##  dhcp_type: scope, relay                                                                                           ##
+##  start_ip: specify the 4th octect only, the rest of the ip is built by other variables.                            ##
+##  end_ip: specify the 4th octect only, the rest of the ip is built by other variables.                              ##
+##  gateway: specify the 4th octect only, the rest of the ip is built by other variables.                             ##
+##  lease_time: specify number of seconds, common lengths, 604800 (1 Week), 28800 (8 hours, typical for wireless)     ##
+##  domain: specify the domain, used to append a dns-suffix                                                           ##
+##                                                                                                                    ##
+########################################################################################################################
+
+## Planned changes will incorporate variables from the vars file.
+
+interfaces:
+  - name: "Data"
+    vlan_id: 10
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    auto_auth_device: "enable"
+    parent_interface: "fortilink"
+    dhcp_type: "scope"
+    relay_ip: "10.75.30.10"
+    start_ip: 20
+    end_ip: 254
+    gateway: 1
+    lease_time: 604800
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"
+
+  - name: "Wireless"
+    vlan_id: 14
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    auto_auth_device: "disable"
+    parent_interface: "fortilink"
+    dhcp_type: "scope"
+    relay_ip: 
+    start_ip: 10
+    end_ip: 254
+    gateway: 1
+    lease_time: 28800
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"
+
+  - name: "Security"
+    vlan_id: 29
+    allow_access: "ping"
+    auto_auth_device: "disable"
+    parent_interface: "fortilink"
+    dhcp_type: "scope"
+    relay_ip: 
+    start_ip: 10
+    end_ip: 254
+    gateway: 1
+    lease_time: 604800
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"
+
+  - name: "Management"
+    vlan_id: 20
+    allow_access: "ping,capwap"
+    auto_auth_device: "enable"
+    parent_interface: "fortilink"
+    dhcp_type: "scope"
+    relay_ip: 
+    start_ip: 10
+    end_ip: 254
+    gateway: 1
+    lease_time: 604800
+    dns_server1: 1.1.1.1
+    dns_server2: 1.0.0.1
+    domain: "your_private_domain"

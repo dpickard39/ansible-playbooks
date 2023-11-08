@@ -1,0 +1,34 @@
+---
+- name: Meraki API Commands
+  gather_facts: false
+  connection: local
+  hosts: localhost
+  vars_files:
+    - vars/external_vars.yml
+
+    
+  tasks:
+    #- name: Query Networks
+    #  meraki_network:
+    #    auth_key: "{{ auth_key }}"
+    #    org_name: "{{ org_name }}"
+    #    state: query
+    #  register: my_networks
+
+    - name: Gather Devices
+      meraki_device:
+        auth_key: "{{ auth_key }}"
+        org_name: "{{ org_name }}"
+        state: query
+      register: my_devices
+
+    - name: Debug Output
+      debug:
+        msg: "{{ my_devices.data | map(attribute='model') | list }}"
+
+    - name: Save output to a file
+      copy:
+        content: "{{ my_devices.data | to_nice_json }}"
+        dest: "meraki_devices.json"
+      when: 
+        - device_model in "{{ my_devices.data | map(attribute='model') | list }}"

@@ -1,0 +1,27 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - vars.yml
+    - ipsec_vars.yml
+  vars:
+  tasks:
+  - name: Check if route already exists
+    fortios_monitor_fact:
+      vdom: "{{ vdom }}"
+      access_token: "{{ fortios_access_token }}"
+      selectors:
+       - selector: "system_available-certificates"
+      params:
+        with_remote: true
+    register: remote_certs
+  
+  - name: Debug Certificate
+    debug:
+      msg: "{{ item.name }}"
+    loop: "{{ remote_certs.meta.0.results }}"
+    # when: "CN = Microsoft Azure Federated SSO Certificate" in remote_certs.meta.0.results
+
+  

@@ -1,0 +1,14 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+    - name: Create Fortilink VLAN interfaces
+      fortios_monitor_fact:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        selector: 'firewall_policy'
+        

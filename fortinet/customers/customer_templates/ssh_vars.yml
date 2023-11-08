@@ -1,0 +1,12 @@
+# This was a one-time use file and will be incorporated into another file.
+
+# ======================== Below are crenditials to connect to Fortigate Device ========
+fgt_host: 'your_host_ip'
+fgt_user: 'your_ssh_user'
+fgt_pass: 'your_ssh_password'
+
+# ======================================================================================
+script_path: '/tmp/fgt.shell.task'
+
+
+

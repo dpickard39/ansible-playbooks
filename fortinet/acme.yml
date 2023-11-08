@@ -1,0 +1,30 @@
+---
+
+## As of 7.0 I have not benn able to get this to work. It creates the certificate but it is not visible in the CLI or GUI, but somehow exists.
+## For now use the sslvpn_certificates.yml to use SSH to configure.
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - vars.yml
+  vars:
+  tasks:
+  - name: Generate Lets Encrypt Certificate for {{ vpn_domain }}.
+    fortios_certificate_local:
+      vdom:  "{{ vdom }}"
+      state: "present"
+      access_token: "{{ fortios_access_token }}"
+      certificate_local:
+        acme_ca_url: "https://acme-v02.api.letsencrypt.org"
+        acme_domain: "{{ vpn_domain }}"
+        acme_email: "{{ acme_email }}"
+        acme_renew_window: "30"
+        acme_rsa_key_size: "2048"
+        auto_regenerate_days: "0"
+        auto_regenerate_days_warning: "0"
+        name: "{{ vpn_domain }}"
+        source: "user"
+        range: "global"
+        enroll_protocol: "acme2"

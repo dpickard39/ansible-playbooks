@@ -1,0 +1,6 @@
+---
+- import_playbook: ldap_configuration.yml
+- import_playbook: sslvpn_certificate.yml
+- import_playbook: azure_saml_configuration.yml
+- import_playbook: sslvpn_configuration.yml
+- import_playbook: sslvpn_firewall_policy.yml
