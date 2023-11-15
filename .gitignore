@@ -1,6 +1,8 @@
 # Do not sync these files
 .DS_Store
 fortinet/certificates/*
+fortinet/customers/*
 
 #Exceptions
 !fortinet/certificates/.gitkeep
+!fortinet/customers/customer_templates/*

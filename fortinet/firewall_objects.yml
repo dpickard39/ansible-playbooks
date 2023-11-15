@@ -1,0 +1,79 @@
+---
+## Todo
+## 1. Add more item.types
+
+
+- hosts: 
+    - fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+    - "customers/{{ customer }}/files/objects.yml"
+  tasks:
+    - name: Create ipmask address objects
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          type: "{{ item.type }}"
+          subnet: "{{ item.subnet }}"
+      with_items: "{{ address }}"
+      when: item.type == "ipmask"
+
+    - name: Create iprange address objects
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          type: "{{ item.type }}"
+          start_ip: "{{ item.start_ip }}"
+          end_ip: "{{ item.end_ip }}"
+      with_items: "{{ address }}"
+      when: item.type == "iprange"
+
+    - name: Create service objects with both TCP and UDP
+      fortios_firewall_service_custom:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_service_custom:
+          name: "{{ item.name }}"
+          category: "{{ item.category }}"
+          protocol: "{{ item.protocol }}"
+          tcp_portrange: "{{ item.tcp_portrange }}"
+          udp_portrange: "{{ item.udp_portrange }}"
+      with_items: "{{ service }}"
+      when: item.tcp_portrange is defined and item.udp_portrange is defined
+
+    - name: Create TCP service objects
+      fortios_firewall_service_custom:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_service_custom:
+          name: "{{ item.name }}"
+          category: "{{ item.category }}"
+          protocol: "{{ item.protocol }}"
+          tcp_portrange: "{{ item.tcp_portrange }}"
+      with_items: "{{ service }}"
+      when: item.tcp_portrange is defined
+
+    - name: Create UDP service objects
+      fortios_firewall_service_custom:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_service_custom:
+          name: "{{ item.name }}"
+          category: "{{ item.category }}"
+          protocol: "{{ item.protocol }}"
+          tcp_portrange: "{{ item.udp_portrange }}"
+      with_items: "{{ service }}"
+      when: item.udp_portrange is defined
