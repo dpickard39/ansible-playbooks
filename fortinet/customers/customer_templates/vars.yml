@@ -26,9 +26,26 @@ sslvpn_client_start_ip: "10.255.255.1"
 sslvpn_client_end_ip: "10.255.255.254"
 sslvpn_dns_server1: "x.x.x.x"
 sslvpn_dns_server2: "x.x.x.x"
-## Place the private key and certificate PEMs into the certificates folder.
-## If you need to rename the private key to private_key.pem and the certificate to certificate.pem
-## These files must be in Base64 format
+
+##################################################
+## Set the ssl_certificate type.                ##
+## Options are: acme | public | factory         ##
+##################################################
+
+ssl_certificate:  "factory"
+
+###################################################################################################################
+##                                              Public Certificate                                               ##                 
+##                                                                                                               ##
+## If you are using a purchased certificate you will need to use the private_key and the cert_content variables. ##
+## If you have a *.pfx file you will need to use OpenSSL to seperate the certificate and key.                    ##
+## To extract the certificate and key you can use the following commands:                                        ##
+##   openssl pkcs12 -in filename.pfx -clcerts -nokeys -out certificate.pem                                       ##
+##   openssl pkcs12 -in filename.pfx -nocerts -out private_key.pem                                               ##
+##   *** I like to name my certificate as the domain name ie. vpn.mydomain.com  ***                              ##
+## These files must be in Base64 format.                                                                         ##
+###################################################################################################################
+
 private_key: "{{ lookup( 'file', certificates/private_key.pem') | b64encode }}"
 cert_content: "{{ lookup( 'file', certificates/certificate.pem') | b64encode }}"
 

@@ -11,9 +11,9 @@ fortigates:
       ### WAN 1 interface settings
       wan1_interface: "wan1"
       wan1_type: "static"
-      wan1_ip: "23.117.62.194"
-      wan1_netmask: "255.255.255.248"
-      wan1_gateway: "23.117.62.198"
+      wan1_ip: "x.x.x.x"
+      wan1_netmask: "255.255.255.x"
+      wan1_gateway: "x.x.x.x"
       ### WAN 2 interface settings
       wan2_interface: "wan2"
       wan2_type: "dhcp"

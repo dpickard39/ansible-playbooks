@@ -2,7 +2,7 @@
 - hosts: 
   - localhost
   vars_files:
-    - "customers/{{ customer }}/ipsec_vars.yml"
+    - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
   - name: Register Allowed URLs from CSV file
@@ -12,7 +12,7 @@
 
   - name: Prepare The Shell Scrit Template.
     raw: |
-           cat > {{script_path }} << EOF_OUTER
+           cat > {{ script_path }} << EOF_OUTER
            # /bin/bash
            # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
            # Optionally you can pass some parameters.

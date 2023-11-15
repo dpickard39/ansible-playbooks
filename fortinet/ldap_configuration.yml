@@ -25,8 +25,7 @@
           password: "{{ ldap_pass }}"
           secure: "{{ ldap_secure }}"
           port: "{{ ldap_port }}"
-      when: sslvpn_auth_type == "ldap" or 
-            configure_ldap == "yes"
+      when: sslvpn_auth_type == "ldap" or configure_ldap == "yes"
     
     - name: Greate User Group for SSLVPN Authentication
       fortios_user_group:
@@ -44,3 +43,5 @@
            - 
             name: "AD LDAP"
       when: sslvpn_auth_type == "ldap"
+
+      
