@@ -1,4 +1,7 @@
 ---
+#################################################
+## Test code to be used in production scripts. ##
+#################################################
 
 - hosts: fortigates
   collections:
@@ -8,9 +11,18 @@
     - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
-    - name: Create Fortilink VLAN interfaces
-      fortios_monitor_fact:
+    - name: Gather firewall policy information
+      fortios_configuration_fact:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
+        formatters:
+          - name
+          - policyid
         selector: 'firewall_policy'
-        
+        filters:
+          - name=="SSLVPN"
+      register: policies
+
+    - debug:
+        msg: "{{ policies.meta.results }}"
+        #msg: "{{ ( policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"
