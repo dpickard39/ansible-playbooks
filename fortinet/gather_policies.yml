@@ -8,9 +8,16 @@
     - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
-    - name: Create Fortilink VLAN interfaces
-      fortios_monitor_fact:
+    - name: Gather Fortigate Firewall Policies and register
+      fortios_configuration_fact:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
+        formatters:
+          - name
+          - policyid
         selector: 'firewall_policy'
+        filters:
+          - name=="SSLVPN"
+      register: policies
+
         
