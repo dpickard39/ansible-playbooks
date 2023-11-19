@@ -39,6 +39,3 @@
         # Without the filter I can pull a list of policyid's and sort them to determine the next available id.
         # Here I am sorting then adding 1 to the results to produce my next available policyid.
         # msg: "{{ (policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"
-
-      
-    
