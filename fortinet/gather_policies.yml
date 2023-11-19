@@ -1,5 +1,11 @@
 ---
 
+###########################################################################
+## This is a test file to practice gathering facts from the Fortigate to ##
+## use in other scripts. This will allow me to use generated policyid's  ##
+## instead of assigning statically.                                      ##
+###########################################################################
+
 - hosts: fortigates
   collections:
     - fortinet.fortios
@@ -12,12 +18,27 @@
       fortios_configuration_fact:
         vdom: "{{ vdom }}"
         access_token: "{{ fortios_access_token }}"
+        ## Use formatters to select which fields you want to gather.
         formatters:
           - name
           - policyid
         selector: 'firewall_policy'
+        # Use filters to search for a specific policy name. 
         filters:
           - name=="SSLVPN"
       register: policies
 
-        
+    # Display the policies results
+    - debug:
+        # when you use -vvv you will see that the information is returned in JSON in a dictionary format
+        # I am selecting meta then results to fiter through the tree.
+
+        # This allows me to see the name and policyid of the filter I specified above.
+        msg: "{{ policies.meta.results }}"
+
+        # Without the filter I can pull a list of policyid's and sort them to determine the next available id.
+        # Here I am sorting then adding 1 to the results to produce my next available policyid.
+        # msg: "{{ (policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"
+
+      
+    
