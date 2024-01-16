@@ -17,7 +17,7 @@
         firewall_policy:
           action: accept
           application_list: "HTMS Application"
-          av_profile: default
+          av_profile: "HTMS Antivirus"
           dstaddr: 
            -  name: all
           dstintf:

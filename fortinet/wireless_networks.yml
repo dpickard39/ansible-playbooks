@@ -1,6 +1,6 @@
 ---
 
-- hosts: ICT-PELLA-SALINA-60F
+- hosts: fortigates
   collections:
     - fortinet.fortios
   connection: httpapi
@@ -124,8 +124,8 @@
           interface: "{{ item.name }}"
           ip_range:
           -
-            start_ip: "10.{{ site_id }}.{{ item.vlan__subnet }}.{{ item.start_ip }}"
-            end_ip: "10.{{ site_id }}.{{ item.vlan_subnet }}.{{ item.end_ip }}"
+            start_ip: "172.{{ site_id }}.{{ item.vlan__subnet }}.{{ item.start_ip }}"
+            end_ip: "172.{{ site_id }}.{{ item.vlan_subnet }}.{{ item.end_ip }}"
           lease_time: "{{ item.lease_time }}"
           dns_server1: "{{ dns_server1 }}"
           dns_server2: "{{ dns_server2 }}"

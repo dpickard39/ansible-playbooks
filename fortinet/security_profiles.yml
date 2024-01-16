@@ -1,5 +1,5 @@
 ---
-#- import_playbook: antivirus_profile.yml
+- import_playbook: antivirus_profile.yml
 - import_playbook: application_profile.yml
 - import_playbook: ips_sensor.yml
 - import_playbook: webfilter_profile.yml

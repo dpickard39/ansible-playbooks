@@ -36,7 +36,7 @@
           name: "SSLVPN_Users"
           match:
            -
-            group_name: "CN=Usesrs,CN=Builtin,{{ ldap_dn }}"
+            group_name: "{{ ldap_group_name }}"
             id: "10"
             server_name: "AD LDAP"
           member:

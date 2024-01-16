@@ -29,6 +29,7 @@ RUN apt-get update \
     locales \
     sshpass \
     lftp \
+    openssh-client \
     python3 \
     python3-dev \
     python3-pip && \

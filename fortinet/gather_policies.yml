@@ -25,4 +25,4 @@
 
     - debug:
         msg: "{{ policies.meta.results }}"
-        msg: "{{ ( policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"
+        #msg: "{{ ( policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"

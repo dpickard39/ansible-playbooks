@@ -25,35 +25,21 @@
           subnet: "{{ item.subnet }}"
           allow_routing: "enable"
       with_items: "{{ address }}"
-      when: item.type == "ipmask" and item.description is undefined
+      when: item.type == "ipmask" and item.comment is undefined
 
-    - name: Create iprange address objects
+    - name: Create ipmask address objects with comments
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
         access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
-          type: "{{ item.type }}"
-          start_ip: "{{ item.start_ip }}"
-          end_ip: "{{ item.end_ip }}"
-          allow_routing: "enable"
-      with_items: "{{ address }}"
-      when: item.type == "iprange" and item.description is undefined
-
-    - name: Create ipmask address objects
-      fortios_firewall_address:
-        vdom: "{{ vdom }}"
-        state: present
-        access_token: "{{ fortios_access_token }}"
-        firewall_address:
-          name: "{{ item.name }}"
-          comments: "{{ item.comment }}"
+          comment: "{{ item.comment }}"
           type: "{{ item.type }}"
           subnet: "{{ item.subnet }}"
           allow_routing: "enable"
       with_items: "{{ address }}"
-      when: item.type == "ipmask" and item.description is defined
+      when: item.type == "ipmask" and item.comment is defined
 
     - name: Create iprange address objects
       fortios_firewall_address:
@@ -62,54 +48,93 @@
         access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
-          comments: "{{ item.comment }}"
           type: "{{ item.type }}"
           start_ip: "{{ item.start_ip }}"
           end_ip: "{{ item.end_ip }}"
           allow_routing: "enable"
       with_items: "{{ address }}"
-      when: item.type == "iprange" and item.description is defined
+      when: item.type == "iprange" and item.comment is undefined
+
+    - name: Create iprange address objects with comments
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          comment: "{{ item.comment }}"
+          type: "{{ item.type }}"
+          start_ip: "{{ item.start_ip }}"
+          end_ip: "{{ item.end_ip }}"
+          allow_routing: "enable"
+      with_items: "{{ address }}"
+      when: item.type == "iprange" and item.comment is defined
+
+    - name: Create FQDN address objects
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          type: "{{ item.type }}"
+          fqdn: "{{ item.fqdn }}"
+      with_items: "{{ address }}"
+      when: item.type == "fqdn" and item.comment is undefined
+
+    - name: Create FQDN address objects with comments
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          comment: "{{ item.comment }}"
+          type: "{{ item.type }}"
+          fqdn : "{{ item.fqdn }}"
+      with_items: "{{ address }}"
+      when: item.type == "fqdn" and item.comment is defined
 
 ##################################################
 ##  These tasks configure TCP and UDP objects.  ##
 ##################################################
 
-    - name: Create TCP service objects
-      fortios_firewall_service_custom:
-        vdom: "{{ vdom }}"
-        state: present
-        access_token: "{{ fortios_access_token }}"
-        firewall_service_custom:
-          name: "{{ item.name }}"
-          category: "{{ item.category }}"
-          protocol: "{{ item.protocol }}"
-          tcp_portrange: "{{ item.tcp_portrange }}"
-      with_items: "{{ service }}"
-      when: item.tcp_portrange is defined and item.udp_portrange is undefined
+    # - name: Create TCP service objects
+    #   fortios_firewall_service_custom:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_service_custom:
+    #       name: "{{ item.name }}"
+    #       category: "{{ item.category }}"
+    #       protocol: "{{ item.protocol }}"
+    #       tcp_portrange: "{{ item.tcp_portrange }}"
+    #   with_items: "{{ service }}"
+    #   when: item.tcp_portrange is defined and item.udp_portrange is undefined
 
-    - name: Create UDP service objects
-      fortios_firewall_service_custom:
-        vdom: "{{ vdom }}"
-        state: present
-        access_token: "{{ fortios_access_token }}"
-        firewall_service_custom:
-          name: "{{ item.name }}"
-          category: "{{ item.category }}"
-          protocol: "{{ item.protocol }}"
-          tcp_portrange: "{{ item.udp_portrange }}"
-      with_items: "{{ service }}"
-      when: item.udp_portrange is defined and item.tcp_portrange is undefined
+    # - name: Create UDP service objects
+    #   fortios_firewall_service_custom:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_service_custom:
+    #       name: "{{ item.name }}"
+    #       category: "{{ item.category }}"
+    #       protocol: "{{ item.protocol }}"
+    #       tcp_portrange: "{{ item.udp_portrange }}"
+    #   with_items: "{{ service }}"
+    #   when: item.udp_portrange is defined and item.tcp_portrange is undefined
 
-    - name: Create service objects with both TCP and UDP
-      fortios_firewall_service_custom:
-        vdom: "{{ vdom }}"
-        state: present
-        access_token: "{{ fortios_access_token }}"
-        firewall_service_custom:
-          name: "{{ item.name }}"
-          category: "{{ item.category }}"
-          protocol: "{{ item.protocol }}"
-          tcp_portrange: "{{ item.tcp_portrange }}"
-          udp_portrange: "{{ item.udp_portrange }}"
-      with_items: "{{ service }}"
-      when: item.tcp_portrange is defined and item.udp_portrange is defined
+    # - name: Create service objects with both TCP and UDP
+    #   fortios_firewall_service_custom:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_service_custom:
+    #       name: "{{ item.name }}"
+    #       category: "{{ item.category }}"
+    #       protocol: "{{ item.protocol }}"
+    #       tcp_portrange: "{{ item.tcp_portrange }}"
+    #       udp_portrange: "{{ item.udp_portrange }}"
+    #   with_items: "{{ service }}"
+    #   when: item.tcp_portrange is defined and item.udp_portrange is defined

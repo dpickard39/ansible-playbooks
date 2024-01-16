@@ -8,7 +8,7 @@
   gather_facts: no
   vars_files:
     - "customers/{{ customer }}/vars.yml"
-    - "customers/{{ customer }}/files/nextiva_addresses.yaml"
+    - "files/nextiva_addresses.yaml"
   tasks:
     - name: Configure address type ipmasks for Nextiva
       fortios_firewall_address:
