@@ -20,4 +20,13 @@
           start_ip: "{{ sslvpn_client_start_ip }}"
           end_ip: "{{ sslvpn_client_end_ip }}"
 
-
+    - name: Create the no-access SSLVPN Web Portal
+      fortios_vpn_ssl_web_portal:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        vpn_ssl_web_portal:
+          name: "no-access"
+          tunnel_mode: "disable"
+          web_mode: "disable"
+          forticlient_download: "disable"

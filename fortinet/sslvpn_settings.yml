@@ -37,7 +37,7 @@
            - name: "all"
           source_address6:
            - name: "all"
-          default_portal: "full-access"
+          default_portal: "no-access"
           dns_server1: "{{ sslvpn_dns_server1 }}"
           dns_suffix: "{{ ad_domain }}"
 
