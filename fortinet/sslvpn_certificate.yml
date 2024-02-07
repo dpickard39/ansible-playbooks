@@ -1,11 +1,17 @@
 ---
 
-- hosts: localhost
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
   vars_files:
     - "customers/{{ customer }}/vars.yml"
   vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 10443
   tasks:
-  - name: Prepare shell script
+  - name: Preparing the shell script
     raw: |
            cat > {{ script_path }} << EOF_OUTER
            # /bin/bash
@@ -26,12 +32,46 @@
            # ==============================================================================================
            EOF
            EOF_OUTER
-    when:  ssl_certificate == "acme"
+    when:
+      - ssl_certificate_type is defined  
+      - ssl_certificate_type == "acme"
 
 
-  - name: Execute script to create {{ vpn_domain }} certificate
+  - name: Executing the script to create sslvpn certificate.
     raw: |
            chmod +x {{ script_path }} && {{ script_path }} '{{ vpn_domain }}' '{{ acme_email }}'
     args:
       executable: /bin/bash
-    when:  ssl_certificate == "acme"
+    when:
+      - ssl_certificate_type is defined  
+      - ssl_certificate_type == "acme"
+
+  - name: Importing the sslvpn certificate.
+    fortios_monitor:
+      vdom:  "{{ vdom }}"
+      access_token: "{{ fortios_access_token }}"
+      enable_log: true
+      selector: 'import.vpn-certificate.local'
+      params:
+        type: "pkcs12"
+        certname: "{{ vpn_domain }}"
+        file_content: "{{ cert_content }}"
+        key_file_content: "{{ private_key }}"
+        password: "{{ private_key_pass }}"
+        scope: "global"
+    when: 
+    #   - ssl_certificate_types is defined
+       - ssl_certificate_type == "pem"
+
+    # fortios_vpn_certificate_local:
+    #   vdom: "{{ vdom }}"
+    #   state: present
+    #   access_token: "{{ fortios_access_token }}"
+    #   vpn_certificate_local:
+    #     name: "{{ vpn_domain }}"
+    #     certificate: "{{ cert_content }}"
+    #     private_key: "{{ private_key }}"
+    #     password: "{{ private_key_pass }}"
+    # when: 
+    #   - ssl_certificate_types is defined
+    #   - ssl_certificate_type == "pem"

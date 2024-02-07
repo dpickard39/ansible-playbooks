@@ -9,7 +9,7 @@
     - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
-    - name: Configure LDAP Server
+    - name: Configure the LDAP server settngs.
       fortios_user_ldap:
         vdom: "{{ vdom }}"
         state: present
@@ -27,7 +27,7 @@
           port: "{{ ldap_port }}"
       when: sslvpn_auth_type == "ldap" or configure_ldap == "yes"
     
-    - name: Greate User Group for SSLVPN Authentication
+    - name: Creating the SSLVPN_Users group for SSLVPN authentication.
       fortios_user_group:
         vdom: "{{ vdom }}"
         state: present

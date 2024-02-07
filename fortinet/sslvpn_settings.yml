@@ -11,14 +11,14 @@
     - "customers/{{ customer }}/vars.yml"
   vars:
   tasks:
-    - name: Configure SSL-VPN
+    - name: Configuring the SSLVPN settings.
       fortios_vpn_ssl_settings:
         vdom: "{{ vdom }}"
-        state: present
         access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
         vpn_ssl_settings:
           authentication_rule:
            -
+            id: 1
             groups: 
              -
               name: "SSLVPN_Users"
@@ -42,10 +42,10 @@
           dns_suffix: "{{ ad_domain }}"
 
 
-    - name: Configure SSL-VPN
+    - name: Configuring the secondary DNS server.
       fortios_vpn_ssl_settings:
         vdom: "{{ vdom }}"
-        state: present
+        member_state: present
         access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
         vpn_ssl_settings:
           dns_server2: "{{ sslvpn_dns_server2 }}"

@@ -16,20 +16,20 @@
         state: present
         access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
         firewall_policy:
-          name: "ssl.root --> internal"
+          name: "SSLVPN Access"
           action: "accept"
           srcintf:
            -
             name: "ssl.root"
           dstintf:
            -
-            name: "internal"
+            name: "trusted"
           srcaddr:
            -
             name: "SSLVPN_TUNNEL_ADDR1"
           dstaddr:
            -
-            name: "internal"
+            name: "port4 address"
           schedule: "always"
           service:
            -

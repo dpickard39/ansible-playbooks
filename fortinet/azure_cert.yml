@@ -12,7 +12,7 @@
    ansible_httpapi_port: 10443
    subject: "Azure"
   tasks:
-  - name: Import Remote Certificate
+  - name: Importing the Azure remote certificate.
     fortios_monitor:
       vdom:  "{{ vdom }}"
       access_token: "{{ fortios_access_token }}"
@@ -21,9 +21,9 @@
       params:
         scope: "global"
         file_content: "{{ azure_remote_cert }}"
-    register: certname
 
-  - name: Prepare shell script
+
+  - name: Preparing the shell script to rename the Azure remote certificate.
     raw: |
            cat > {{ script_path }} << EOF_OUTER
            # /bin/bash
@@ -39,7 +39,7 @@
            EOF
            EOF_OUTER
 
-  - name: Execute script to rename Azure Certificate
+  - name: Executing the shell script to rename the Azure remote certiciate to Azure_Remote_Certificate.
     raw: |
            chmod +x {{ script_path }} && {{ script_path }}
     args:
@@ -54,7 +54,7 @@
   #     selector: 'system_available-certificates'
   #     params:
   #       with_remote: true
-  #       with_ca: true
+  #       with_ca: false
   #       with_crl: false
   #       find_all_references: false
   #   register: certificates
@@ -71,9 +71,9 @@
 
         
 
-  - name: Filter Azure Certificate
-    debug:
-      msg: "{{ azure_remote_cert }}"
+  # - name: Filter Azure Certificate
+  #   debug:
+  #     msg: "{{ azure_remote_cert }}"
     
 
   # - name: Save Output to File

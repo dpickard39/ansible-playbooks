@@ -24,7 +24,7 @@
           idp_single_sign_on_url: "https://login.microsoftonline.com/{{ azure_tenant_id }}/saml2"
           idp_single_logout_url: "https://login.microsoftonline.com/{{ azure_tenant_id }}/saml2"
           idp_cert: "{{ azure_remote_certname }}"
-          user_name: "user"
+          user_name: "username"
           group_name: "group"
           digest_method: "sha1"
       when: sslvpn_auth_type == "saml"
