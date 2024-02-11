@@ -13,7 +13,7 @@
       fortios_user_saml:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        access_token: "{{ fortios_access_token }}"
         user_saml:
           name: "Microsoft Azure SAML"
           cert: "{{ azure_local_certname }}"
@@ -27,16 +27,20 @@
           user_name: "username"
           group_name: "group"
           digest_method: "sha1"
-      when: sslvpn_auth_type == "saml"
+      when:
+        - sslvpn_auth_type is defined 
+        - sslvpn_auth_type == "saml"
 
     - name: Greate User Group for SSLVPN Authentication
       fortios_user_group:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        access_token: "{{ fortios_access_token }}" 
         user_group:
           name: "SSLVPN_Users"
           member:
            - 
             name: "Microsoft Azure SAML"
-      when: sslvpn_auth_type == "saml"
+      when:
+        - sslvpn_auth_type is defined 
+        - sslvpn_auth_type == "saml"
