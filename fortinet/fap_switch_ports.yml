@@ -17,7 +17,7 @@
         state: present
         access_token: "{{ fortios_access_token }}"
         switch_controller_managed_switch:
-          name: "MDF-SW1"
+          name: ""
           ports:
             -
           #     switch_id: "S108FFTV21022363"
@@ -36,7 +36,7 @@
           #     untagged_vlans:
           #       - vlan_name: "quarantine"
           #     vlan: "Management"
-          switch_id: "S124FFTF23030508"
+          switch_id: ""
 
             # edit "port7"
             #     set poe-capable 1
