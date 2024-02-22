@@ -1,19 +1,18 @@
 ---
 
-- hosts: 
-    - fortigates
-  collections:
-    - fortinet.fortios
+- hosts: fortigates
+  collections: 
+  - fortinet.fortios
   connection: httpapi
-  gather_facts: no
+
   vars_files:
     - "customers/{{ customer }}/vars.yml"
     - "customers/{{ customer }}/files/objects.yml"
-  tasks:
+
 #################################################################
 ##  These tasks configure ipmask and iprange address objects.  ##
 #################################################################
-
+  tasks:
     - name: Create ipmask address objects
       fortios_firewall_address:
         vdom: "{{ vdom }}"
