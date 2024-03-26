@@ -24,7 +24,7 @@
               name: "SSLVPN_Users"
             portal: "full-access"
           port: "443"
-          servercert: "{{ vpn_domain }}"
+          servercert: "{{ azure_local_certname }}"
           tunnel_ip_pools:
            -
             name: "SSLVPN_TUNNEL_ADDR1"
