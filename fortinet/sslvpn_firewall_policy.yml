@@ -29,7 +29,7 @@
             name: "SSLVPN_TUNNEL_ADDR1"
           dstaddr:
            -
-            name: "port4 address"
+            name: "internal"
           schedule: "always"
           service:
            -

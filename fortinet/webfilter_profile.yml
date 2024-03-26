@@ -241,7 +241,7 @@
               # Peer-to-peer file sharing
               id: "72"
               category: "72"
-              action: "monitor"
+              action: "block"
              - 
               # Internet radio and TV
               id: "75"
