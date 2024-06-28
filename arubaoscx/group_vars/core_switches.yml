@@ -1,6 +1,6 @@
 ansible_connection: httpapi  # Do not change
 ansible_user: 'admin'
-ansible_password: '#Defy3xp3ctations!'
+ansible_password: ''
 ansible_network_os: arubanetworks.aoscx.aoscx
 ansible_connection: arubanetworks.aoscx.aoscx  # REST API via pyaoscx connection method
 ansible_httpapi_validate_certs: False
