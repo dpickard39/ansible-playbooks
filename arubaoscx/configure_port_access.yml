@@ -1,0 +1,41 @@
+- hosts: access_switches
+  collections:
+    - arubanetworks.aoscx
+
+  vars:
+    ansible_connection: network_cli
+  tasks:
+    # - name: Clear Port-Access
+    #   aoscx_command:
+    #     commands:
+    #       - "configure terminal"
+    #       - "no port-access device-profile AP-LLDP-Profile"
+    #       - "no port-access role LLDP-AP"
+    #       - "no port-access lldp-group AP-LLDP-Group"
+
+    - name: Configure LLDP Group
+      aoscx_command:
+        commands:
+          - "configure terminal"
+          - "port-access lldp-group AP-LLDP-Group"
+          - "seq 10 match sysname UBN"
+          - "seq 20 match sysname UAP"
+
+    - name: Configure Role
+      aoscx_command:
+        commands:
+          - "configure terminal"
+          - "port-access role LLDP-AP"
+          - "description Access Point"
+          - "trust-mode dscp"
+          - "vlan trunk native 10"
+          - "vlan trunk allowed 2-3,5-6,10,100-102"
+
+    - name: Configure Device Profile
+      aoscx_command:
+        commands:
+          - "configure terminal"
+          - "port-access device-profile AP-LLDP-Profile"
+          - "associate role LLDP-AP"
+          - "associate lldp-group AP-LLDP-Group"
+          - "enable"

@@ -1,0 +1,31 @@
+ansible_ssh_user: admin
+ansible_ssh_password: '#Defy3xp3ctations!'
+ansible_become: true
+ansible_become_method: enable
+ansible_network_os: dellemc.os6.os6
+
+os6_vlan:
+    vlan 10:
+      name: "Management"
+      state: present
+    vlan 12:
+      name: "Workstations"
+      state: present
+    vlan 13:
+      name: "Voice"
+      state: present
+    vlan 14:
+      name: "Wireless"
+      state: present
+    vlan 16:
+      name: "ScanGun"
+      state: present
+    vlan 50:
+      name: "Guest"
+      state: present
+    vlan 55:
+      name: "IoT"
+      state: present
+    vlan 60:
+      name: "Security"
+      state: present

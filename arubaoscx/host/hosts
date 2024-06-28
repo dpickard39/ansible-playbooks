@@ -1,0 +1,12 @@
+[core_switches]
+envwater-core
+
+[access_switches]
+envwater-mdf
+envwater-accounting
+envwater-comm
+envwater-pride
+envwater-print-shop
+envwater-manufacturing
+envwater-backwall
+envwater-server

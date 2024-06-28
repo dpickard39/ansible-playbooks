@@ -1,0 +1,17 @@
+- hosts: access_switches
+  collections:
+    - arubanetworks.aoscx
+    - ansible.builtin
+
+  tasks:
+
+    - name: Ansible fact - ansible_date_time
+      debug:
+        var: ansible_date_time
+        
+    - name: Copy Running Config to TFTP server as CLI
+      aoscx_backup_config:
+        config_name: running-config
+        remote_output_file_tftp_path: "tftp://10.12.10.100/{{ inventory_hostname }}-{{ ansible_date_time }}.cli"
+        config_type: cli
+        vrf: default

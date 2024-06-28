@@ -1,0 +1,30 @@
+- hosts: all
+  collections:
+    - arubanetworks.aoscx
+  vars_files:
+    - network_settings.yml
+  tasks:
+    - name: Create VLANs with desciption name
+      aoscx_vlan:
+        vlan_id: "{{ item.vlan }}"
+        name: "{{ item.name }}"
+        description: "{{ item.description }}"
+      with_list: "{{ vlans }}"
+
+- hosts: all
+  collections:
+    - arubanetworks.aoscx
+  vars_files:
+    - network_settings.yml
+  vars:
+    ansible_connection: network_cli
+  tasks:
+    - name: Configure the Voice VLAN
+      aoscx_command:
+        commands:
+          - "configure terminal"
+          - "vlan {{ item.vlan }}"
+          - "voice"
+      with_list: "{{ vlans }}"
+      when: 
+        - item.name == "voice"

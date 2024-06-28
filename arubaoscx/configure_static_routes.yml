@@ -1,0 +1,15 @@
+- hosts: core_switches
+  collections:
+    - arubanetworks.aoscx
+  vars_files:
+    - network_settings.yml
+  
+  tasks:
+    - name: Create IPv4 Static Route with VRF - Forwarding
+      aoscx_static_route:
+        vrf_name: default
+        destination_address_prefix: "{{ item.dst }}"
+        type: forward
+        distance: 1
+        next_hop_ip_address: "{{ item.next_hop }}"
+      with_list: "{{ static_routes }}"
