@@ -40,6 +40,8 @@
           default_portal: "no-access"
           dns_server1: "{{ sslvpn_dns_server1 }}"
           dns_suffix: "{{ ad_domain }}"
+          ## Mitigate D(HE)ater Attacks
+          banned_cipher: "DHE"
 
 
     - name: Configuring the secondary DNS server.

@@ -18,6 +18,7 @@
           gui_multiple_interface_policy: enable
           gui_switch_controller: enable
           gui_wireless_controller: enable
+          gui_dos_policy: enable
 
     - name: Configure Fortigate Global Settings
       fortios_system_global:

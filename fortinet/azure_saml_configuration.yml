@@ -15,7 +15,7 @@
         state: present
         access_token: "{{ fortios_access_token }}"
         user_saml:
-          name: "Microsoft Azure SAML"
+          name: "Entra-ID-SAML"
           cert: "{{ azure_local_certname }}"
           entity_id: "https://{{ vpn_domain }}/remote/saml/metadata/"
           single_sign_on_url: "https://{{ vpn_domain }}/remote/saml/login"
@@ -40,7 +40,7 @@
           name: "SSLVPN_Users"
           member:
            - 
-            name: "Microsoft Azure SAML"
+            name: "Entra-ID-SAML"
       when:
         - sslvpn_auth_type is defined 
         - sslvpn_auth_type == "saml"

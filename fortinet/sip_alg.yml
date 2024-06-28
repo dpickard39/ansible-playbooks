@@ -1,12 +1,10 @@
----
-
 - hosts: fortigates
   collections:
     - fortinet.fortios
   connection: httpapi
   gather_facts: no
   vars_files:
-    - "customers/{{ customer }}/vars.yml"
+    - vars.yml
   vars:
   tasks:
     - name: Remove SIP ALG Session-Helper

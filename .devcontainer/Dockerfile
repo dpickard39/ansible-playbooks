@@ -1,4 +1,3 @@
-
 # Ansible Docker
 
 # Use the ubuntu:latest

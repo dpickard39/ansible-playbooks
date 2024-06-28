@@ -2,6 +2,8 @@
 .DS_Store
 fortinet/certificates/*
 fortinet/customers/*
+fortinet/system_admin.yml
+fortinet/fortimanager.yml
 .vscode
 
 #Exceptions

@@ -7,7 +7,7 @@
 
   vars_files:
     - "customers/{{ customer }}/vars.yml"
-    - "customers/{{ customer }}/files/objects.yml"
+    - "customers/{{ customer }}/objects.yml"
 
 #################################################################
 ##  These tasks configure ipmask and iprange address objects.  ##
