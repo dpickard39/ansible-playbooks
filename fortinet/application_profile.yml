@@ -21,8 +21,6 @@
           options:
            -
             "allow-dns"
-           -
-            "allow-quic"
           entries:
            -
             action: "pass"
