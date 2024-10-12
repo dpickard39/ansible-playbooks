@@ -1,0 +1,14 @@
+- name: Create the Security Profiles > Intrusion Protection > HTMS Protect Client 
+  fortios_ips_sensor:
+    vdom: "{{ vdom }}"
+    state: present
+    access_token: "{{ fortios_access_token }}" 
+    ips_sensor:
+      name: "HTMS Protect Client"
+      comment: "High Touch Managed Profile"
+      block_malicious_url: "enable"
+      entries:
+        -
+         id: 1
+         location: "client"
+      scan_botnet_connections: "block"
