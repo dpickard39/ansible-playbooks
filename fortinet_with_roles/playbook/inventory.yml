@@ -3,7 +3,7 @@ fortigates:
   hosts:
     Ansible-Lab:
       ansible_host: "192.168.1.99"
-      fortios_access_token: "y36rGNHt8Qpgr538zQh9hNGQg787Hk"
+      fortios_access_token: "xcxGj9kG7m5qh9j9b3nccq8hskGHQp"
       fgt_user: 'admin'
       fgt_pass: '[hight0uch]'
       model: "60F" # You may need to edit scripts for other models.
@@ -23,8 +23,10 @@ fortigates:
 
   vars:
     customer: lab # This is the name of your customer folder, used in scripts
-    ansible_network_os: fortinet.fortios.fortios
+    ansible_network_os: fortinet.fortios
+    connection: httpapi
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 10443 # Default port is 443
     vdom: "root"
+    script_path: '/tmp/fgt.shell.task'
