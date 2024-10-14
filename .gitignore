@@ -5,7 +5,7 @@ fortinet/customers/*
 fortinet/system_admin.yml
 fortinet/fortimanager.yml
 arubaoscx/group_vars/*
-fortinet_with_roles/playbook/inventory.yml
+fortinet_with_roles/playbook/*
 .vscode
 
 #Exceptions
