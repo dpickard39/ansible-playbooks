@@ -4,6 +4,7 @@ fortinet/certificates/*
 fortinet/customers/*
 fortinet/system_admin.yml
 fortinet/fortimanager.yml
+fortinet_with_roles/playbook/inventory.yml
 arubaoscx/group_vars/*
 .vscode
 
