@@ -4,7 +4,7 @@ fortinet/certificates/*
 fortinet/customers/*
 fortinet/system_admin.yml
 fortinet/fortimanager.yml
-fortinet_with_roles/playbook/inventory.yml
+fortinet_with_roles/playbook/*
 arubaoscx/group_vars/*
 fortinet_with_roles/playbook/*
 .vscode
@@ -12,3 +12,4 @@ fortinet_with_roles/playbook/*
 #Exceptions
 !fortinet/certificates/.gitkeep
 !fortinet/customers/customer_templates/*
+
