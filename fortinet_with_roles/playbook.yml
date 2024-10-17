@@ -1,9 +1,0 @@
----
-- name: Fortigate Configuration
-  hosts: fortigates
-  collections:
-    - fortinet.fortios  
-  connection: httpapi
-  gather_facts: True
-  roles:
-    - common

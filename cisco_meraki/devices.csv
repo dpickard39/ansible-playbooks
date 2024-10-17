@@ -1,4 +1,0 @@
-﻿network_name,key_id,device_name,device_type,serial_no,network_name,vlan_id
-Ansible,device-1,SW1,MS120-8LP,XXXX-XXXX-XXXX,Ansible,1
-Ansible,device-2,FW1,MX64,XXXX-XXXX-XXXX,Ansible,1
-Ansible,device-3,AP1,MR33,XXXX-XXXX-XXXX,Ansible,1
