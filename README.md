@@ -1,0 +1,3 @@
+Welcome to my ansible-playbooks collection. This is newly uploaded, I will update this readme with instructions on how to use the Docker container as soon as I can. Some scripts are fully functional and some are not. I am working on seperating these scripts. Many of these scripts where written as needed and I am working on making them more module.
+
+In this repository you will find a .devcontainer folder. This will allow you to build a docker environment that has all the requirements that my scripts require.

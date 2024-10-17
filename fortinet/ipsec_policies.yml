@@ -1,0 +1,69 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+    - "customers/{{ customer }}/ipsec_vars.yml"
+  vars:
+  tasks:
+    - name: Create policy for internal to {{ site1_name }}
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_policy:
+          name: "internal_to_{{ site1_name }}"
+          action: "accept"
+          srcintf:
+           -
+            name: "internal"
+          dstintf:
+           -
+            name: "{{ site1_name }}"
+          srcaddr:
+           -
+            name: "{{ site1_name }}_VPN_local"
+          dstaddr:
+           -
+            name: "{{ site1_name }}_VPN_remote"
+          schedule: "always"
+          service:
+           -
+            name: "ALL"
+          logtraffic: "all"
+          logtraffic_start: "enable"
+          nat: "disable"
+          policyid: "20"
+
+    - name: Create policy for {{ site1_name }} to internal
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_policy:
+          name: "{{ site1_name }}_to_internal"
+          action: "accept"
+          srcintf:
+           -
+            name: "{{ site1_name }}"
+          dstintf:
+           -
+            name: "internal"
+          srcaddr:
+           -
+            name: "{{ site1_name }}_VPN_remote"
+          dstaddr:
+           -
+            name: "{{ site1_name }}_VPN_local"
+          schedule: "always"
+          service:
+           -
+            name: "ALL"
+          logtraffic: "all"
+          logtraffic_start: "enable"
+          nat: "disable"
+          policyid: "21"

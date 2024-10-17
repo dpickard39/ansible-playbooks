@@ -1,0 +1,12 @@
+---
+# variables used for IOS upgrade playbook
+upgrade_ios_version: 17.03.04b
+upgrade_ios_image: cat9k_lite_iosxe.17.03.04b.SPA.bin
+upgrade_ios_hash: ea0e2da9541ba62bfd8407b2dc6fcf38
+http_url: xxx.xxx.xxx.xxx
+http_port: 8080
+ftp_user:
+ftp_password:
+ftp_server:
+precheck_path:
+postcheck_path:

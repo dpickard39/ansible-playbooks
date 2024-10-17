@@ -1,0 +1,100 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+    - community.general
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Register firewall policies from CSV file
+      community.general.read_csv:
+        path: ./files/firewall_policies.csv
+        dialect: excel
+        # fieldnames: srcintf,dstintf,action,srcaddr,dstaddr,schedule,service,utm,id,ssl,av,webfilter,dnsfilter,ips,waf,application,logtraffic,loggtraffic_start,nat,groups,name
+      register: policy
+      delegate_to: localhost
+
+    - name: Add Policies 
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_policy:
+          action: "{{ item.action }}"
+          application_list: "{{ item.application }}"
+          av_profile: "{{ item.av }}"
+          dnsfilter_profile: "{{ item.dnsfilter }}"
+          dstaddr: 
+           -
+            name: "{{ item.dstaddr }}"
+          dstintf: 
+           -
+            name: "{{ item.dstintf }}"
+          groups:
+           -
+            name: "{{ item.groups }}"
+          policyid: "{{ item.id }}"
+          ips_sensor: "{{ item.ips }}"
+          logtraffic_start: "{{ item.loggtraffic_start }}"
+          logtraffic: "{{ item.logtraffic }}"
+          name: "{{ item.name }}"
+          nat: "{{ item.nat }}"
+          schedule: "{{ item.schedule }}"
+          service:
+           -
+            name: "{{ item.service }}"
+          srcaddr:
+           -
+            name: "{{ item.srcaddr }}"
+          srcintf:
+           -
+            name: "{{ item.srcintf }}"
+          ssl_ssh_profile: "{{ item.ssl }}"
+          utm_status: "{{ item.utm }}"
+          waf_profile: "{{ item.waf }}"
+          webfilter_profile: "{{ item.webfilter }}"
+      loop: "{{ policy.list }}"
+    
+    # - name: Set AntiVirus Profile 
+    #   fortios_firewall_policy:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_policy:
+    #       policyid: "{{ item.id }}"
+    #       av_profile: "{{ item.av-profile }}"
+    #   loop: "{{ policy.list }}"
+    #   when: "{{ item.av-profile }}" is defined
+
+    # - name: Set Webfilter Policy
+    #   fortios_firewall_policy:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_policy:
+    #       policyid: "{{ item.id }}"
+    #       webfilter_profile: "{{ item.webfilter }}"
+    #   loop: "{{ policy.list }}"
+    #   when: policy.list.0.webfilter is defined
+
+    # - name: Set the Application Profile 
+    #   fortios_firewall_policy:
+    #     vdom: "{{ vdom }}"
+    #     state: present
+    #     access_token: "{{ fortios_access_token }}"
+    #     firewall_policy:
+    #       policyid: "{{ item.id }}"
+    #       av_profile: "{{ item.application }}"
+    #   loop: "{{ policy.list }}"
+    #   when: "{{ policy.list[0].application }}" is defined
+
+
+    # - name: Debug policy CSV JSON output
+    #   debug:
+    #     msg: "{{ item.name }}"
+    #   loop: "{{ policy.list }}"
+    #   when: item.list.value[0] application is defined

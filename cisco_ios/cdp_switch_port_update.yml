@@ -1,0 +1,66 @@
+---
+# Find Meraki Access Points using CDP Neibhors and updates Cisco Catalyst switchports to trunks with a specified native VLAN.
+# You will need to provide a list of switches and credentials in the hosts file.
+# If you have older Cisco switches that still require 'switchport trunk encapsulation dot1q' you can provice a list of models via the dot1q_models variable.
+- name: Meraki AP port config
+  hosts: switches:ios
+  gather_facts: no
+  connection: network_cli
+  vars:
+    device_type: "Meraki MR"
+    dot1q_models: "WS-C3750"
+    native_vlan: "99"
+
+  tasks:
+  - name: Collect Neighbors
+    register: neighbor_switches
+    cisco.ios.ios_facts:
+      gather_subset: interfaces
+
+  - name: Collect Hardware Information
+    register: switches
+    cisco.ios.ios_facts:
+      gather_subset: '!config'
+
+  - name: Find model
+    debug:
+      msg: "{{ switches.ansible_facts.ansible_net_model }}" 
+
+  - name: Update port configuration except on Dot1q switches
+    cisco.ios.ios_config:
+      backup: yes
+      lines:
+        - description Connected to Meraki AP {{ item.value[0].host }}
+        - switchport mode trunk
+        - switchport trunk native vlan {{ native_vlan }}
+        - switchport nonegotiate
+        - spanning-tree portfast trunk
+      parents: interface {{ item.key }}
+      save_when: changed
+    with_dict: "{{ neighbor_switches.ansible_facts.ansible_net_neighbors }}"
+    when:
+      - item.value[0].platform is defined
+      - device_type in item.value[0].platform
+      - dot1q_models not in switches.ansible_facts.ansible_net_model
+  
+  - name: Update port configuration on Dot1q switches
+    cisco.ios.ios_config:
+      backup: yes
+      lines:
+        - description Connected to Meraki AP {{ item.value[0].host }}
+        - switchport trunk encapsulation dot1q
+        - switchport mode trunk
+        - switchport trunk native vlan {{ native_vlan }}
+        - switchport nonegotiate
+        - spanning-tree portfast trunk
+      parents: interface {{ item.key }}
+      save_when: changed
+    with_dict: "{{ neighbor_switches.ansible_facts.ansible_net_neighbors }}"
+    when:
+      - item.value[0].platform is defined
+      - device_type in item.value[0].platform
+      - dot1q_models in switches.ansible_facts.ansible_net_model
+
+  - name: Post Backup
+    cisco.ios.ios_config:
+      backup: yes

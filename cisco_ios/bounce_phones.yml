@@ -1,0 +1,25 @@
+---
+- name: Meraki AP port config
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+  - name: Collect Neighbors
+    register: neighbor_switches
+    cisco.ios.ios_facts:
+      gather_subset: interfaces
+
+  - name: Update port configuration
+    vars:
+      device_type: "IP Phone"
+    cisco.ios.ios_config:
+      lines:
+        - shutdown
+        - no shutdown
+      parents: interface {{ item.key }}
+      save_when: changed
+    with_dict: "{{ neighbor_switches.ansible_facts.ansible_net_neighbors }}"
+    when:
+      - item.value[0].platform is defined
+      - device_type in item.value[0].platform

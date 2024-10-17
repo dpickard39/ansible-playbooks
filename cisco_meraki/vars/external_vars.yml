@@ -1,0 +1,7 @@
+---
+# Define variables used by the Meraki playbooks.
+
+auth_key: "your_api_auth_key" # "api_key from Meraki"
+org_name: "your_org_id" # "Your Org Name"
+net_id: "your_network_id" # "Your network ID"
+enable_pass: "your_enable_password" # your enable password for Cisco Switches

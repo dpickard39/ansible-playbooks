@@ -1,0 +1,6 @@
+- hosts: os6_switches
+  connection: network_cli
+  collections:
+    - dellemc.os6
+  roles:
+    - os6_vlan

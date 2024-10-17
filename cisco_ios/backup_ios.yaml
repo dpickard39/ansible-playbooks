@@ -1,0 +1,10 @@
+---
+- name: Backup IOS Configs
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+    - name: Backup the config
+      ios_config:
+        backup: yes

@@ -1,0 +1,32 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Updating the SSLVPN_TUNNEL_ADDR1 address object with the specified IP address range.
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "SSLVPN_TUNNEL_ADDR1"
+          type: "iprange"
+          start_ip: "{{ sslvpn_client_start_ip }}"
+          end_ip: "{{ sslvpn_client_end_ip }}"
+
+    - name: Creating the no-access SSLVPN profile to use as default.
+      fortios_vpn_ssl_web_portal:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        vpn_ssl_web_portal:
+          name: "no-access"
+          tunnel_mode: "disable"
+          web_mode: "disable"
+          forticlient_download: "disable"

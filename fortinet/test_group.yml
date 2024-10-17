@@ -1,0 +1,38 @@
+---
+- hosts: 
+  - localhost
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+  - name: Register Allowed URLs from CSV file
+    read_csv:
+      path: ./files/vpn_addresses.csv
+    register: addresses
+
+  - name: Prepare The Shell Scrit Template.
+    raw: |
+           cat > {{ script_path }} << EOF_OUTER
+           # /bin/bash
+           # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+           # Optionally you can pass some parameters.
+           # The character `a` at second line below is to avoid post-login-banner barrier.
+           sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ fgt_host }} <<EOF
+           a
+           # ====================== Edit Your Commands Below =============================================
+           config firewall addrgrp
+           edit '\$1'
+           append member '\$2'
+           set allow-routing 'enable'
+           end
+           # ==============================================================================================
+           EOF
+           EOF_OUTER
+
+
+  - name: Execute The Cli Commands.
+    raw: |
+           chmod +x {{ script_path }} && {{ script_path }} '{{ vpn_name }}_VPN_{{ item.group }}' '{{ item.name }}'
+    args:
+      executable: /bin/bash
+    with_items: "{{ addresses.list }}"

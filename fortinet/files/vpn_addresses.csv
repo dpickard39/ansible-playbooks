@@ -1,0 +1,9 @@
+name,subnet,site1,site2
+SiteA_subnet_1,172.16.10.0/24,local,remote
+SiteA_subnet_2,172.16.11.0/24,local,remote
+SiteA_subnet_3,172.16.12.0/24,local,remote
+SiteA_subnet_4,172.16.13.0/24,local,remote
+SiteB_subnet_1,172.20.10.0/24,remote,local
+SiteB_subnet_2,172.20.11.0/24,remote,local
+SiteB_subnet_3,172.20.12.0/24,remote,local
+SiteB_subnet_4,172.20.13.0/24,remote,local

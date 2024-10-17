@@ -1,0 +1,54 @@
+---
+
+## Need to update to use custom vars file 
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no 
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Configuring the SSLVPN settings.
+      fortios_vpn_ssl_settings:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        vpn_ssl_settings:
+          authentication_rule:
+           -
+            id: 1
+            groups: 
+             -
+              name: "SSLVPN_Users"
+            portal: "full-access"
+          port: "443"
+          servercert: "{{ azure_local_certname }}"
+          tunnel_ip_pools:
+           -
+            name: "SSLVPN_TUNNEL_ADDR1"
+          tunnel_ipv6_pools:
+           - name: "SSLVPN_TUNNEL_IPv6_ADDR1"
+          source_interface:
+           - name: "{{ wan1_interface }}"
+           - name: "{{ wan2_interface }}"
+          source_address:
+           - name: "all"
+          source_address6:
+           - name: "all"
+          default_portal: "no-access"
+          dns_server1: "{{ sslvpn_dns_server1 }}"
+          dns_suffix: "{{ ad_domain }}"
+          ## Mitigate D(HE)ater Attacks
+          banned_cipher: "DHE"
+
+
+    - name: Configuring the secondary DNS server.
+      fortios_vpn_ssl_settings:
+        vdom: "{{ vdom }}"
+        member_state: present
+        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
+        vpn_ssl_settings:
+          dns_server2: "{{ sslvpn_dns_server2 }}"
+      when: dns_server2 is defined

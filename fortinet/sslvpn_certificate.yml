@@ -1,0 +1,85 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 10443
+  tasks:
+  - name: Preparing script to create a Let's Encrypt certificate
+    raw: |
+           cat > {{ script_path }} << EOF_OUTER
+           # /bin/bash
+           # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+           # Optionally you can pass some parameters.
+           # The character `a` at second line below is to avoid post-login-banner barrier.
+           sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ fgt_host }} <<EOF
+           a
+           # ====================== Edit Your Commands Below =============================================
+           config vpn certificate local
+           edit '\$1'
+           set range global
+           set enroll-protocol acme2
+           set acme-domain '\$1'
+           set acme-email '\$2'
+           end
+           y
+           # ==============================================================================================
+           EOF
+           EOF_OUTER
+    when:
+      - ssl_certificate_type is defined  
+      - ssl_certificate_type == "acme"
+
+
+  - name: Executing the script and creating the Let's encrypt certificate.
+    raw: |
+           chmod +x {{ script_path }} && {{ script_path }} '{{ vpn_domain }}' '{{ acme_email }}'
+    args:
+      executable: /bin/bash
+    when:
+      - ssl_certificate_type is defined  
+      - ssl_certificate_type == "acme"
+
+  - name: Importing Base64 encoded PEM certificate and private key.
+    fortios_monitor:
+      vdom:  "{{ vdom }}"
+      access_token: "{{ fortios_access_token }}"
+      enable_log: true
+      selector: 'import.vpn-certificate.local'
+      params:
+        type: "pkcs12"
+        certname: "{{ vpn_domain }}"
+        file_content: "{{ cert_content }}"
+        key_file_content: "{{ private_key }}"
+        password: "{{ private_key_pass }}"
+        scope: "global"
+    when: 
+       - ssl_certificate_type is defined
+       - ssl_certificate_type == "pem"
+
+    #####################################################
+    ## This method does not appear to be working so I  ##
+    ## had to use the fortios_monitor module.          ##
+    #####################################################
+    
+    # fortios_vpn_certificate_local:
+    #   vdom: "{{ vdom }}"
+    #   state: present
+    #   access_token: "{{ fortios_access_token }}"
+    #   vpn_certificate_local:
+    #     name: "{{ vpn_domain }}"
+    #     certificate: "{{ cert_content }}"
+    #     private_key: "{{ private_key }}"
+    #     password: "{{ private_key_pass }}"
+    # when: 
+    #   - ssl_certificate_types is defined
+    #   - ssl_certificate_type == "pem"
+
+    #####################################################
+    #####################################################

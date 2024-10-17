@@ -1,0 +1,7 @@
+---
+device-1:
+  network_name: Ansible-Wireless
+  device_name: AP1
+  device_type: MR33
+  serial_no: XXXX-XXXX-XXXX
+  vlan_id: 1

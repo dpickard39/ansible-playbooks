@@ -1,0 +1,204 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+    - "customers/{{ customer }}/interface_settings.yml"
+  vars:
+  tasks:
+    - name: Remove default outbound policy
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: absent
+        access_token: "{{ fortios_access_token }}"
+        firewall_policy:
+          policyid: 1
+
+    - name: Configure Wan1 interface with static IP
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ wan1_interface }}"
+          alias: "wan1"
+          interface: "{{ wan1_interface }}"
+          mode: "static"
+          ip: "{{ wan1_ip }}/{{wan1_netmask}}"
+          allowaccess: "ping,https,fgfm"
+          device_identification: "disable"
+          role: "wan"
+      when:
+        - wan1_type == "static"
+
+    - name: Configure Wan1 interface with DHCP
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ wan1_interface }}"
+          alias: "wan1"
+          interface: "{{ wan1_interface }}"
+          mode: "dhcp"
+          allowaccess: "ping,https,fgfm"
+          device_identification: "disable"
+          role: "wan"
+      when:
+        - wan1_type == "dhcp"
+
+    - name: Configure Wan2 interface with Static IP
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ wan2_interface }}"
+          interface: "{{ wan2_interface }}"
+          alias: "wan2"
+          mode: "static"
+          ip: "{{ wan2_ip }}/{{ wan2_netmask }}"
+          allowaccess: "ping,https,fgfm,ssh"
+          device_identification: "disable"
+          role: "wan"
+      when:
+        - wan2_type == "static"
+
+    - name: Configure Wan2 interface with DHCP
+      fortios_system_interface:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        system_interface:
+          vdom: "{{ vdom }}"
+          name: "{{ wan2_interface }}"
+          interface: "{{ wan2_interface }}"
+          alias: "wan2"
+          mode: "dhcp"
+          allowaccess: "ping,https,fgfm,ssh"
+          device_identification: "disable"
+          role: "wan"
+      when:
+        - wan2_type == "dhcp"
+
+    - name: Configure the virtual-wan-link SDWAN Zone (Static/DHCP)
+      fortios_system_sdwan:
+        vdom: "{{ vdom }}"
+        # member_state: present
+        access_token: "{{ fortios_access_token }}"
+        system_sdwan:
+          status: "enable"
+          members:
+            - 
+              interface: "{{ wan1_interface }}"
+              gateway: "{{ wan1_gateway }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 10
+            -
+              interface: "{{ wan2_interface }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 20
+          zone:
+            - 
+              name: "virtual-wan-link"
+      when:
+        - wan1_type == "static"
+        - wan2_type == "dhcp"
+
+    - name: Configure the virtual-wan-link SDWAN Zone (Static/Static)
+      fortios_system_sdwan:
+        vdom: "{{ vdom }}"
+        # member_state: present
+        access_token: "{{ fortios_access_token }}"
+        system_sdwan:
+          status: "enable"
+          members:
+            - 
+              interface: "{{ wan1_interface }}"
+              gateway: "{{ wan1_gateway }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 10
+            - 
+              interface: "{{ wan2_interface }}"
+              gateway: "{{ wan2_gateway }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 20
+          zone:
+            - 
+              name: "virtual-wan-link"
+      when:
+        - wan1_type == "static"
+        - wan2_type == "static"
+        
+    - name: Configure the virtual-wan-link SDWAN Zone (DHCP/DHCP)
+      fortios_system_sdwan:
+        vdom: "{{ vdom }}"
+        # member_state: present
+        access_token: "{{ fortios_access_token }}"
+        system_sdwan:
+          status: "enable"
+          members:
+            - 
+              interface: "{{ wan1_interface }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 10
+            - 
+              interface: "{{ wan2_interface }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 20
+          zone:
+            - 
+              name: "virtual-wan-link"
+      when:
+        - wan1_type == "dhcp"
+        - wan2_type == "dhcp"
+
+    - name: Configure the virtual-wan-link SDWAN Zone
+      fortios_system_sdwan:
+        vdom: "{{ vdom }}"
+        # member_state: present
+        access_token: "{{ fortios_access_token }}"
+        system_sdwan:
+          status: "enable"
+          members:
+            - 
+              interface: "{{ wan1_interface }}"
+              zone: "virtual-wan-link"
+              enable: "enable"
+              seq_num: 10
+            - 
+              interface: "{{ wan2_interface }}"
+              gateway: "{{ wan2_gateway }}"
+              zone: "virtual-wan-link"
+              status: "enable"
+              seq_num: 20
+          zone:
+            - 
+              name: "virtual-wan-link"
+      when:
+        - wan1_type == "dhcp"
+        - wan2_type == "static"
+
+    - name: Configure the default route to the virtual-wan-link
+      fortios_router_static:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        state: present
+        router_static:
+          distance: "1"
+          sdwan_zone:
+            - name: "virtual-wan-link"
+          seq_num: "1"
+          status: enable

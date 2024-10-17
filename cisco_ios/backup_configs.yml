@@ -1,0 +1,19 @@
+---
+- name: Meraki AP port config
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+
+  tasks:
+  
+  - name: Collect config
+    register: run_config
+    backup: yes
+    ios_command:
+      commands:
+        - show run
+
+  - name: Save output to {{ playbook_dir }}
+    copy:
+      content: "{{ run_config.stdout[0] }}"
+      dest: "{{ playbook_dir }}/{{ inventory_hostname }}.txt"

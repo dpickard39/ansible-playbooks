@@ -1,0 +1,6 @@
+---
+- import_playbook: ipsec_addresses.yml
+- import_playbook: ipsec_append_groups.yml
+- import_playbook: ipsec_interface.yml
+- import_playbook: ipsec_routes.yml
+- import_playbook: ipsec_policies.yml

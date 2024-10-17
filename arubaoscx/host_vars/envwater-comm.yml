@@ -1,0 +1,2 @@
+ansible_host: 10.12.10.31
+stack_members: 2

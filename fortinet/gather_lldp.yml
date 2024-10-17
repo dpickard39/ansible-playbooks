@@ -1,0 +1,25 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Gather LLDP Ports
+      fortios_monitor_fact:
+        vdom: "root"
+        access_token: "{{ fortios_access_token }}"
+        selector: 'wifi_managed_ap'
+      register: lldp_neighbors
+    
+    - name: Display Ports
+      ansible.builtin.debug:
+        msg: "{{ lldp_neighbors.meta }}"
+      with_list: lldp_neighbors
+
+    - name: Save output to a file
+      copy:
+        content: "{{ lldp_neighbors.meta | to_nice_json }}"
+        dest: "{{inventory_hostname}}_neighbors.json"

@@ -1,0 +1,14 @@
+---
+- name: Cleanup IOS install files
+  hosts: switches 
+  connection: network_cli
+
+  tasks:
+    - name: Remove IOS install files
+      ios_command:
+        commands:
+          - command: install remove inactive
+            prompt: Do you want to remove the above files
+            answer: 'y'
+      vars:
+        ansible_command_timeout: 600

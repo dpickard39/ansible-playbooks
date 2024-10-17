@@ -1,0 +1,85 @@
+---
+
+- hosts: 
+    - fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+    - "files/nextiva_addresses.yaml"
+  tasks:
+    - name: Configure address type ipmasks for Nextiva
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          type: "{{ item.type }}"
+          subnet: "{{ item.subnet }}"
+      with_items: "{{ address }}"
+      when: item.type == "ipmask"
+
+    - name: Configure address type iprange for Nextiva
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_address:
+          name: "{{ item.name }}"
+          type: "{{ item.type }}"
+          start_ip: "{{ item.start_ip }}"
+          end_ip: "{{ item.end_ip }}"
+      with_items: "{{ address }}"
+      when: item.type == "iprange"
+
+    - name: Configure Nextiva address group
+      fortios_firewall_addrgrp:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_addrgrp:
+          name: "Nextiva_IP_Ranges"
+          member:
+            - name: "Nextiva_IP_Range_1"
+            - name: "Nextiva_IP_Range_2"
+            - name: "Nextiva_IP_Range_Fax"
+            - name: "Nextiva_Unity_1"
+            - name: "Nextiva_Unity_2"
+            - name: "Nextiva_Unity_3"
+            - name: "Nextiva_Unity_4"
+
+    - name: Configure the Nextiva firewall policy
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        firewall_policy:
+          policyid: 20
+          name: "Nextiva Hosted Phones"
+          action: accept
+          srcintf:
+           - name: any
+          dstintf: 
+           - name: virtual-wan-link
+          srcaddr:
+           - name: all
+          dstaddr: 
+           - name: Nextiva_IP_Ranges
+          schedule: "always"
+          service:
+           - name: ALL
+          nat: enable
+          utm_status: disable
+          logtraffic: all
+          logtraffic_start: enable
+
+    - name: Move Nextiva Hosted Phones Policy to the top
+      fortios_firewall_policy:
+        vdom: "{{ vdom }}"
+        action: move
+        access_token: "{{ fortios_access_token }}"
+        self: "20"
+        before: "1" 

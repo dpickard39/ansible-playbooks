@@ -1,0 +1,20 @@
+- name: Configure Trusted Hosts on the system admin account to restrict https and ssh access.
+  fortios_system_admin:
+    vdom: "{{ vdom }}"
+    access_token: "{{ fortios_access_token }}"
+    state: present
+    system_admin:
+      name: "admin"
+      accprofile: "systemsuper_admin"
+      ## Wichita
+      trusthost1: "64.66.99.129 255.255.255.255"
+      ## Corpus Christi
+      trusthost2: "12.197.198.2 255.255.255.255"
+      ## Data Center / ITS Lab
+      trusthost3: "162.250.231.0 255.255.255.240"
+      ## Azure VDI
+      trusthost4: "172.174.78.102 255.255.255.255"
+      ## RFC 1918
+      trusthost5: "10.0.0.0 255.0.0.0"
+      trusthost6: "172.16.0.0 255.240.0.0"
+      trusthost7: "192.168.0.0 255.255.0.0"

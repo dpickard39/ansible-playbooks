@@ -1,0 +1,21 @@
+---
+
+- name: Cisco Show CDP Neighbors
+  hosts: switches
+  gather_facts: true
+  connection: network_cli
+
+  
+
+  tasks:
+  - name: Update port configuration
+    ios_config:
+      lines:
+        - description Connected to Meraki AP {{ item.value[0].platform }}
+      parents: interface {{ item.key }}
+      save_when: changed
+    with_dict: "{{ ansible_facts.net_neighbors }}"
+    when: 
+      - ansible_network_os == 'ios'
+      - ' "Meraki MR" in {{ item.value[0].platform }}'
+

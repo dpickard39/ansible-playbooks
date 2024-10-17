@@ -1,0 +1,27 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Configure Webfilter Policy Settings
+      fortios_application_list:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        application_list:
+          name: "HTMS Application"
+          comment: "High Touch generated policy"
+          unknown_application_log: "enable"
+          options:
+           -
+            "allow-dns"
+          entries:
+           -
+            action: "pass"
+            id: 1

@@ -1,0 +1,40 @@
+---
+
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+    - "customers/{{ customer }}/ipsec_vars.yml"
+  vars:
+  tasks:
+    - name: Check if route already exists
+      fortios_configuration_fact:
+        vdom: "{{ vdom }}"
+        access_token: "{{ fortios_access_token }}"
+        selectors: 
+         - selector: "router_static"
+      register: routes
+
+    - name: Create VPN static route
+      fortios_router_static:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        router_static:
+          device: "wan1"
+          dstaddr: "{{ site1_name }}_VPN_remote"
+      when: site1_name not in routes.meta.0.results.0.dstaddr
+    
+    - name: Create VPN Blackhole
+      fortios_router_static:
+        vdom: "{{ vdom }}"
+        state: present
+        access_token: "{{ fortios_access_token }}"
+        router_static:
+          distance: "254"
+          blackhole: "enable"
+          dstaddr: "{{ site1_name }}_VPN_remote"
+      when: site1_name not in routes.meta.0.results.1.dstaddr

@@ -1,0 +1,48 @@
+---
+
+## Planning to upgrade this script to create multiple zones.
+
+- hosts:
+    - fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  vars_files:
+    - "customers/{{ customer }}/interface_settings.yml"
+  vars:
+    script_path: '/tmp/fgt.shell.task'
+    zone_name: "LAN"
+  tasks:
+  - name: Add interfaces to the LAN zone
+    fortios_system_zone:
+      vdom: "{{ vdom }}"
+      state: present
+      access_token: "{{ fortios_access_token }}"
+      system_zone:
+        intrazone: allow
+        name: LAN
+
+  - name: Prepare The Shell Script to append interfaces to the {{ zone_name }}
+    raw: |
+          cat > {{ script_path }} << EOF_OUTER
+          # /bin/bash
+          # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+          # Optionally you can pass some parameters.
+          # The character `a` at second line below is to avoid post-login-banner barrier.
+          sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ ansible_host }} <<EOF
+          a
+          # ====================== Edit Your Commands Below =============================================
+          config system zone
+          edit '\$1'
+          append interface '\$2'
+          end
+          # ==============================================================================================
+          EOF
+          EOF_OUTER
+
+  - name: Append interfaces to the {{ zone_name }}
+    raw: |
+            chmod +x {{ script_path }} && {{ script_path }} '{{ zone_name }}' '{{ item.name }}'
+    args:
+      executable: /bin/bash
+    with_list: "{{ interfaces }}"
