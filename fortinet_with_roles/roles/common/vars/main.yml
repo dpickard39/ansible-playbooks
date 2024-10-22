@@ -1,5 +1,14 @@
 ---
 # vars file for common
+
+ansible_network_os: fortinet.fortios
+connection: httpapi
+ansible_httpapi_use_ssl: yes
+ansible_httpapi_validate_certs: no
+ansible_httpapi_port: 10443 # Default port is 443
+vdom: "root"
+script_path: '/tmp/fgt.shell.task'
+
 allowed_urls:
  - download.microsoft.com
  - download.windowsupdate.com
