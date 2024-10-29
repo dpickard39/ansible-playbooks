@@ -17,7 +17,7 @@
         user_saml:
           name: "Entra-ID-SAML"
           cert: "{{ azure_local_certname }}"
-          entity_id: "https://{{ vpn_domain }}/remote/saml/metadata/"
+          entity_id: "https://{{ vpn_domain }}/remote/saml/metadata"
           single_sign_on_url: "https://{{ vpn_domain }}/remote/saml/login"
           single_logout_url: "https://{{ vpn_domain }}/remote/saml/logout"
           idp_entity_id: "https://sts.windows.net/{{ azure_tenant_id }}/"

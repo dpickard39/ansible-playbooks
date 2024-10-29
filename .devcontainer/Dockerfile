@@ -3,7 +3,7 @@
 # Use the ubuntu:latest
 FROM ubuntu:jammy
 ENV DEBIAN_FRONTEND=noninteractive
-ENV pip_packages="ansible ansible-core ansible-pylibssh backports.entry-points-selectable bcrypt certifi cffi chardet charset-normalizer cryptography distlib filelock fortiosapi idna Jinja2 MarkupSafe oyaml packaging paramiko platformdirs pycparser PyNaCl pyparsing PyYAML requests resolvelib six urllib3 virtualenv openpyxl pyvmomi pyaoscx" 
+ENV pip_packages="ansible==10.4 ansible-core ansible-pylibssh backports.entry-points-selectable bcrypt certifi cffi chardet charset-normalizer cryptography distlib filelock fortiosapi idna Jinja2 MarkupSafe oyaml packaging paramiko platformdirs pycparser PyNaCl pyparsing PyYAML requests resolvelib six urllib3 virtualenv openpyxl pyvmomi pyaoscx" 
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
 # will be updated to match your local UID/GID (when using the dockerFile property).
@@ -45,11 +45,11 @@ RUN add-apt-repository universe \
     && add-apt-repository multiverse \
     && apt update
 
-RUN pip3 install --upgrade \
+RUN pip install --upgrade \
     setuptools \
     pip
 
-RUN pip3 install $pip_packages
+RUN pip install $pip_packages
 
 RUN ln -s /usr/bin/python3 /usr/bin/python \
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
@@ -67,7 +67,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python \
 
 
 # Install Ansible Collections.
-RUN ansible-galaxy collection install fortinet.fortios \
+RUN ansible-galaxy collection install fortinet.fortios:2.3.8 \
     && ansible-galaxy collection install cisco.ios \
     && ansible-galaxy collection install cisco.meraki \
     && ansible-galaxy collection install community.vmware \

@@ -34,7 +34,7 @@
            a
            # ====================== Edit Your Commands Below =============================================
            config vpn certificate remote
-           rename REMOTE_Cert_1 to Azure_Remote_Certificate
+           rename REMOTE_Cert_1 to EntraID_Remote_Certificate
            # ==============================================================================================
            EOF
            EOF_OUTER

@@ -4,6 +4,6 @@
   collections:
     - fortinet.fortios  
   connection: httpapi
-  gather_facts: True
+  gather_facts: False
   roles:
     - common

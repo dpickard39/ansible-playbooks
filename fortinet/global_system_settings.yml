@@ -4,7 +4,7 @@
   collections:
     - fortinet.fortios
   connection: httpapi
-  gather_facts: yes
+  gather_facts: no
   vars_files:
     - "customers/{{ customer }}/vars.yml"
   vars:
