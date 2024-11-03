@@ -16,7 +16,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP431G-default"
           platform: 
@@ -59,7 +58,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP431G-default"
           platform: 
@@ -102,7 +100,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP231G-default"
           platform: 
@@ -143,7 +140,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP231G-default"
           platform: 
@@ -184,7 +180,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP231F-default"
           platform: 
@@ -217,7 +212,6 @@
       fortios_wireless_controller_wtp_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         wireless_controller_wtp_profile:
           name: "FAP231F-default"
           platform: 

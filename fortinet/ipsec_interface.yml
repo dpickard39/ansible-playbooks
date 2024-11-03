@@ -15,7 +15,6 @@
     fortios_vpn_ipsec_phase1_interface:
       vdom: "{{ vdom }}"
       state: present
-      access_token: "{{ fortios_access_token }}"
       vpn_ipsec_phase1_interface:
         name: "{{ site1_name }}"
         interface: "wan1"
@@ -33,7 +32,6 @@
     fortios_vpn_ipsec_phase2_interface:
       vdom: "{{ vdom }}"
       state: present
-      access_token: "{{ fortios_access_token }}"
       vpn_ipsec_phase2_interface:
         name: "{{ site1_name }}"
         phase1name: "{{ site1_name }}"

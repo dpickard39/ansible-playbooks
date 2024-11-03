@@ -12,5 +12,4 @@
     - name: fact gathering with filters
       fortios_configuration_fact:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
         selector: 'system_interface'

@@ -11,7 +11,6 @@
       fortios_system_session_helper:
         vdom: "{{ vdom }}"
         state: absent
-        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
         system_session_helper:
           id: "13"
                   

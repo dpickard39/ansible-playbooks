@@ -2,7 +2,6 @@
   fortios_ips_sensor:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}" 
     ips_sensor:
       name: "HTMS Protect Client"
       comment: "High Touch Managed Profile"

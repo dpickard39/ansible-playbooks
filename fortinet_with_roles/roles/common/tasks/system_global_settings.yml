@@ -1,11 +1,10 @@
 - name: Configure Fortigate System Global Settings
   fortios_system_global:
     vdom: "{{ vdom }}"
-    access_token: "{{ fortios_access_token }}"
+    # access_token: "{{ fortios_access_token }}"
     system_global:
       admin_console_timeout: 120
       admintimeout: 30
-      admin_sport: 10443
       gui_certificates: enable
       gui_theme: mariner
       hostname: "{{ inventory_hostname }}"

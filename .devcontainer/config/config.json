@@ -1,0 +1,13 @@
+{
+ 	"mysql": {
+ 		"host": "mysql:3306",
+ 		"user": "semaphore",
+ 		"pass": "L0vinAnsible",
+ 		"name": "semaphore"
+ 	},
+ 	"dialect": "mysql",
+ 	"tmp_path": "/tmp/semaphore",
+ 	"cookie_hash": "5CuCHSKU68RSzUsWLpUsjAwrtXb9qg58xQ1h3E0X8HY=",
+ 	"cookie_encryption": "txvoRkCGOqzb068SkzWDvGxsCMllungx6RlhJg4mz9U=",
+ 	"access_key_encryption": "vj8hGJOneQO10c4tzL7gpYTaOuQLNWe79Jsqh6uSAN8="
+ }

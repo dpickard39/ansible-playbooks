@@ -13,7 +13,6 @@
   - name: Check if route already exists
     fortios_monitor_fact:
       vdom: "{{ vdom }}"
-      access_token: "{{ fortios_access_token }}"
       selectors:
        - selector: "system_available-certificates"
       params:

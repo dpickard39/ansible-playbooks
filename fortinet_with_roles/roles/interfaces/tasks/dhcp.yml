@@ -1,0 +1,25 @@
+---
+- name: Creating DHCP Servers for VLAN interfaces
+  fortios_system_dhcp_server:
+    vdom: "{{ vdom }}"
+    state: present
+    system_dhcp_server:
+      id: "{{ item.vlan_id }}"
+      domain: "{{ item.domain }}"
+      default_gateway: "{{ item.ipaddress }}"
+      netmask: "255.255.255.0"
+      interface: "{{ item.name }}"
+      ip_range:
+      -
+        id: "{{ item.vlan_id }}"
+        start_ip: "{{ item.start_ip }}"
+        end_ip: "{{ item.end_ip }}"
+      lease_time: "{{ item.lease_time }}"
+      dns_server1: "{{ item.dns_server1 }}"
+      dns_server2: "{{ item.dns_server2 }}"
+      server_type: "regular"
+      status: enable
+  with_list:  "{{ interfaces }}"
+  when: 
+    - item.dhcp_type is defined
+    - item.dhcp_type == "scope"

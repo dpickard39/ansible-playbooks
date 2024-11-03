@@ -49,7 +49,6 @@
   - name: Importing Base64 encoded PEM certificate and private key.
     fortios_monitor:
       vdom:  "{{ vdom }}"
-      access_token: "{{ fortios_access_token }}"
       enable_log: true
       selector: 'import.vpn-certificate.local'
       params:
@@ -71,7 +70,7 @@
     # fortios_vpn_certificate_local:
     #   vdom: "{{ vdom }}"
     #   state: present
-    #   access_token: "{{ fortios_access_token }}"
+    #   # access_token: "{{ fortios_access_token }}"
     #   vpn_certificate_local:
     #     name: "{{ vpn_domain }}"
     #     certificate: "{{ cert_content }}"

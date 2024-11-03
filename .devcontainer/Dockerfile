@@ -3,7 +3,7 @@
 # Use the ubuntu:latest
 FROM ubuntu:jammy
 ENV DEBIAN_FRONTEND=noninteractive
-ENV pip_packages="ansible==10.4 ansible-core ansible-pylibssh backports.entry-points-selectable bcrypt certifi cffi chardet charset-normalizer cryptography distlib filelock fortiosapi idna Jinja2 MarkupSafe oyaml packaging paramiko platformdirs pycparser PyNaCl pyparsing PyYAML requests resolvelib six urllib3 virtualenv openpyxl pyvmomi pyaoscx" 
+ENV pip_packages="ansible ansible-core ansible-pylibssh backports.entry-points-selectable bcrypt certifi cffi chardet charset-normalizer cryptography distlib filelock fortiosapi idna Jinja2 MarkupSafe oyaml packaging paramiko platformdirs pycparser PyNaCl pyparsing PyYAML requests resolvelib six urllib3 virtualenv openpyxl pyvmomi pyaoscx" 
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
 # will be updated to match your local UID/GID (when using the dockerFile property).

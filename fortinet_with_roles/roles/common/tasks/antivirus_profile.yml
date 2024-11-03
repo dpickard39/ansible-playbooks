@@ -2,7 +2,7 @@
   fortios_antivirus_profile:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}"
+    # access_token: "{{ fortios_access_token }}"
     antivirus_profile: 
       name: "HTMS Antivirus"
       comment: "High Touch Managaged Profile"

@@ -15,7 +15,6 @@
       fortios_webfilter_ftgd_local_cat:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         webfilter_ftgd_local_cat:
           desc: "Allowed"
           id: 190
@@ -25,7 +24,6 @@
       fortios_webfilter_ftgd_local_cat:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         webfilter_ftgd_local_cat:
           desc: "Blocked"
           id: 191
@@ -40,7 +38,6 @@
       fortios_webfilter_ftgd_local_rating:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         webfilter_ftgd_local_rating:
           rating: "190"
           status: "enable"
@@ -57,7 +54,6 @@
       fortios_webfilter_ftgd_local_rating:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         webfilter_ftgd_local_rating:
           rating: "191"
           status: "enable"
@@ -69,7 +65,6 @@
       fortios_webfilter_profile:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         webfilter_profile:
           name: "HTMS Webfilter"
           comment: "High Touch generated policy"

@@ -10,7 +10,6 @@
     - name: Gather LLDP Ports
       fortios_monitor_fact:
         vdom: "root"
-        access_token: "{{ fortios_access_token }}"
         selector: 'wifi_managed_ap'
       register: lldp_neighbors
     

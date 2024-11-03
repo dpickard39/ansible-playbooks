@@ -12,7 +12,7 @@
     #   fortios_system_interface:
     #     vdom: "{{ vdom }}"
     #     state: present
-    #     access_token: "{{ fortios_access_token }}"
+    #     # access_token: "{{ fortios_access_token }}"
     #     system_interface:
     - name: Read JSON and print variable
       debug:

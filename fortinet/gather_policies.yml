@@ -14,7 +14,6 @@
     - name: Gather firewall policy information
       fortios_configuration_fact:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
         formatters:
           - name
           - policyid

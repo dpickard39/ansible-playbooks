@@ -13,7 +13,6 @@
     - name: Upgrade Fortigate 200F firmware
       fortios_monitor:
         vdom: "root"
-        access_token: "{{ fortios_access_token }}"
         selector: 'upgrade.system.firmware'
         params:
           source: "upload"
@@ -27,7 +26,6 @@
     - name: Upgrade Fortigate 60F firmware
       fortios_monitor:
         vdom: "root"
-        access_token: "{{ fortios_access_token }}"
         selector: 'upgrade.system.firmware'
         params:
           source: "upload"

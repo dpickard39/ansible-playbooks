@@ -14,7 +14,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           type: "{{ item.type }}"
@@ -26,7 +25,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           type: "{{ item.type }}"
@@ -39,7 +37,6 @@
       fortios_firewall_addrgrp:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_addrgrp:
           name: "Nextiva_IP_Ranges"
           member:
@@ -55,7 +52,6 @@
       fortios_firewall_policy:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_policy:
           policyid: 20
           name: "Nextiva Hosted Phones"
@@ -80,6 +76,5 @@
       fortios_firewall_policy:
         vdom: "{{ vdom }}"
         action: move
-        access_token: "{{ fortios_access_token }}"
         self: "20"
         before: "1" 

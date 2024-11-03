@@ -6,4 +6,5 @@
   connection: httpapi
   gather_facts: False
   roles:
+    - backup
     - common

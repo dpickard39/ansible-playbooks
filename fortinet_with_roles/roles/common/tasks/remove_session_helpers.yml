@@ -1,0 +1,20 @@
+- name: Remove SIP ALG Session-Helper
+  fortios_system_session_helper:
+    vdom: "{{ vdom }}"
+    state: absent
+    system_session_helper:
+      id: "13"
+
+- name: Remove MGCP Port udp\2427
+  fortios_system_session_helper:
+    vdom: "{{ vdom }}"
+    state: absent
+    system_session_helper:
+      id: "19"
+
+- name: Remove MGCP Port udp\2727
+  fortios_system_session_helper:
+    vdom: "{{ vdom }}"
+    state: absent
+    system_session_helper:
+      id: "20"

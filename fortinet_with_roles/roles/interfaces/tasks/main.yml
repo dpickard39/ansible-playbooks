@@ -1,0 +1,3 @@
+---
+- import_tasks: interfaces.yml
+- import_tasks: dhcp.yml

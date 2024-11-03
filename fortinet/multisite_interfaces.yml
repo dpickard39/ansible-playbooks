@@ -12,7 +12,6 @@
       fortios_system_interface:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_interface:
           vdom: "{{ vdom }}"
           name: "fortilink"
@@ -22,7 +21,6 @@
       fortios_system_interface:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_interface:
           vdom: "{{ vdom }}"
           name: "{{ item.name }}"
@@ -42,7 +40,6 @@
       fortios_system_interface:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_interface:
           vdom: "{{ vdom }}"
           name: "{{ item.name }}"
@@ -64,7 +61,6 @@
       fortios_system_dhcp_server:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_dhcp_server:
           id: "{{ item.vlan_id }}"
           domain: "{{ item.domain }}"
@@ -91,7 +87,6 @@
       fortios_system_zone:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_zone:
           description: "Inter-VLAN routing is allowed."
           intrazone: "allow"
@@ -101,7 +96,6 @@
       fortios_system_zone:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         system_zone:
           description: "Inter-VLAN routing is denied."
           intrazone: "deny"

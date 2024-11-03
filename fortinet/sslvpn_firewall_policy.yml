@@ -14,7 +14,6 @@
       fortios_firewall_policy:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
         firewall_policy:
           name: "SSLVPN Access"
           action: "accept"

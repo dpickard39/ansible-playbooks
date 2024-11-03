@@ -1,0 +1,15 @@
+- hosts: fortigates
+  connection: httpapi
+  collections:
+    - fortinet.fortios
+  vars:
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    ansible_httpapi_port: 443
+    vdom: "root"
+  tasks:
+  - name: Export multiple palybooks
+    fortios_export_config_playbook:
+      selectors:
+      - selector: system_settings
+      output_path: "./"

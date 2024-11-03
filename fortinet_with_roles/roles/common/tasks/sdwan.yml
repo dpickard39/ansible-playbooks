@@ -2,7 +2,6 @@
   fortios_firewall_policy:
     vdom: "{{ vdom }}"
     state: absent
-    access_token: "{{ fortios_access_token }}"
     firewall_policy:
       policyid: 1
 
@@ -10,7 +9,6 @@
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}"
     system_interface:
       vdom: "{{ vdom }}"
       name: "{{ wan1_interface }}"
@@ -28,7 +26,6 @@
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}"
     system_interface:
       vdom: "{{ vdom }}"
       name: "{{ wan1_interface }}"
@@ -45,7 +42,6 @@
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}"
     system_interface:
       vdom: "{{ vdom }}"
       name: "{{ wan2_interface }}"
@@ -63,7 +59,6 @@
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
-    access_token: "{{ fortios_access_token }}"
     system_interface:
       vdom: "{{ vdom }}"
       name: "{{ wan2_interface }}"
@@ -77,10 +72,8 @@
     - wan2_type == "dhcp"
 
 - name: Configure the virtual-wan-link SDWAN Zone (Static/DHCP)
-  fortios_system_sdwan:
+  fortinet.fortios.fortios_system_sdwan:
     vdom: "{{ vdom }}"
-    # member_state: present
-    access_token: "{{ fortios_access_token }}"
     system_sdwan:
       status: "enable"
       members:
@@ -103,10 +96,8 @@
     - wan2_type == "dhcp"
 
 - name: Configure the virtual-wan-link SDWAN Zone (Static/Static)
-  fortios_system_sdwan:
+  fortinet.fortios.fortios_system_sdwan:
     vdom: "{{ vdom }}"
-    # member_state: present
-    access_token: "{{ fortios_access_token }}"
     system_sdwan:
       status: "enable"
       members:
@@ -130,10 +121,8 @@
     - wan2_type == "static"
     
 - name: Configure the virtual-wan-link SDWAN Zone (DHCP/DHCP)
-  fortios_system_sdwan:
+  fortinet.fortios.fortios_system_sdwan:
     vdom: "{{ vdom }}"
-    # member_state: present
-    access_token: "{{ fortios_access_token }}"
     system_sdwan:
       status: "enable"
       members:
@@ -155,10 +144,8 @@
     - wan2_type == "dhcp"
 
 - name: Configure the virtual-wan-link SDWAN Zone
-  fortios_system_sdwan:
+  fortinet.fortios.fortios_system_sdwan:
     vdom: "{{ vdom }}"
-    # member_state: present
-    access_token: "{{ fortios_access_token }}"
     system_sdwan:
       status: "enable"
       members:
@@ -183,7 +170,6 @@
 - name: Configure the default route to the virtual-wan-link
   fortios_router_static:
     vdom: "{{ vdom }}"
-    access_token: "{{ fortios_access_token }}"
     state: present
     router_static:
       distance: "1"

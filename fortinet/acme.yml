@@ -15,7 +15,6 @@
     fortios_certificate_local:
       vdom:  "{{ vdom }}"
       state: "present"
-      access_token: "{{ fortios_access_token }}"
       certificate_local:
         acme_ca_url: "https://acme-v02.api.letsencrypt.org"
         acme_domain: "{{ vpn_domain }}"

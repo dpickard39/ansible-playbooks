@@ -12,7 +12,6 @@
     - name: Configure Fortigate System Settings
       fortios_system_settings:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
         system_settings:
           gui_multicast_policy: enable
           gui_multiple_interface_policy: enable
@@ -23,7 +22,6 @@
     - name: Configure Fortigate Global Settings
       fortios_system_global:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
         system_global:
           admin_console_timeout: 120
           admintimeout: 30

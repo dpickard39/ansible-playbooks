@@ -1,0 +1,227 @@
+- name: Configure the default wtp-profile for FAP431G access points in tunnel mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP431G-default"
+      platform: 
+        type: "431G"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      handoff_rssi: 25
+      handoff_sta_thresh: 55
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "tunnel"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "20MHz"
+        vap_all: "tunnel"
+        darrp: "enable"
+        wids_profile: "default"
+      radio_3:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-6G"
+        channel_bonding: "80MHz"
+        vap_all: "tunnel"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "tunnel"
+
+- name: Configure the default wtp-profile for FAP431G access points in bridge mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP431G-default"
+      platform: 
+        type: "431G"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      handoff_rssi: 25
+      handoff_sta_thresh: 55
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "bridge"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "20MHz"
+        vap_all: "bridge"
+        darrp: "enable"
+        wids_profile: "default"
+      radio_3:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-6G"
+        channel_bonding: "80MHz"
+        vap_all: "bridge"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "bridge"
+
+- name: Configure the default wtp-profile for FAP231G access points in tunnel mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP231G-default"
+      platform: 
+        type: "231G"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "tunnel"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "40MHz"
+        vap_all: "tunnel"
+        darrp: "enable"
+        wids_profile: "default"
+      radio_3:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-6G"
+        channel_bonding: "80MHz"
+        vap_all: "tunnel"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "tunnel"
+
+- name: Configure the default wtp-profile for FAP231G access points in bridge mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP231G-default"
+      platform: 
+        type: "231G"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "bridge"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "40MHz"
+        vap_all: "bridge"
+        darrp: "enable"
+        wids_profile: "default"
+      radio_3:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-6G"
+        channel_bonding: "80MHz"
+        vap_all: "bridge"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "bridge"
+
+- name: Configure the default wtp-profile for FAP231F access points in tunnel mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP231F-default"
+      platform: 
+        type: "231F"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "tunnel"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "40MHz"
+        vap_all: "tunnel"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "tunnel"
+
+- name: Configure the default wtp-profile for FAP231F access points in bridge mode
+  fortios_wireless_controller_wtp_profile:
+    vdom: "{{ vdom }}"
+    state: present
+    wireless_controller_wtp_profile:
+      name: "FAP231F-default"
+      platform: 
+        type: "231F"
+      frequency_handoff: "enable"
+      handoff_roaming: "enable"
+      radio_1:
+        arrp_profile: "arrp-default"     
+        auto_power_level: "enable"
+        band: "802.11ax,n,g-only"
+        channel: 
+          - chan: 1
+          - chan: 6
+          - chan: 11
+        darrp: "enable"
+        vap_all: "bridge"
+        wids_profile: "default"
+      radio_2:
+        arrp_profile: "arrp-default"
+        auto_power_level: "enable"
+        band: "802.11ax-5G"
+        channel_bonding: "40MHz"
+        vap_all: "bridge"
+        darrp: "enable"
+        wids_profile: "default"
+  when: 
+    - wireless_mode == "bridge"

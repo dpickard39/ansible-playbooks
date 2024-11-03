@@ -1,0 +1,13 @@
+---
+- name: Backup a virtual domain.
+  fortios_monitor_fact:
+     selector: 'system_config_backup'
+     vdom: 'root'
+     params:
+         scope: 'global'
+  register: backupinfo
+
+- name: Save the backup information.
+  copy:
+     content: '{{ backupinfo.meta.raw }}'
+     dest: './local.backup'

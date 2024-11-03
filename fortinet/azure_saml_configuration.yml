@@ -13,7 +13,6 @@
       fortios_user_saml:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         user_saml:
           name: "Entra-ID-SAML"
           cert: "{{ azure_local_certname }}"
@@ -35,7 +34,6 @@
       fortios_user_group:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}" 
         user_group:
           name: "SSLVPN_Users"
           member:

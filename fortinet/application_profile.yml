@@ -13,7 +13,6 @@
       fortios_application_list:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         application_list:
           name: "HTMS Application"
           comment: "High Touch generated policy"

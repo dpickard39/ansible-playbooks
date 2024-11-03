@@ -13,7 +13,6 @@
     - name: Check if route already exists
       fortios_configuration_fact:
         vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
         selectors: 
          - selector: "router_static"
       register: routes
@@ -22,7 +21,6 @@
       fortios_router_static:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         router_static:
           device: "wan1"
           dstaddr: "{{ site1_name }}_VPN_remote"
@@ -32,7 +30,6 @@
       fortios_router_static:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         router_static:
           distance: "254"
           blackhole: "enable"

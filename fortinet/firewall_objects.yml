@@ -17,7 +17,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           type: "{{ item.type }}"
@@ -30,7 +29,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           comment: "{{ item.comment }}"
@@ -44,7 +42,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           type: "{{ item.type }}"
@@ -58,7 +55,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           comment: "{{ item.comment }}"
@@ -73,7 +69,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           type: "{{ item.type }}"
@@ -85,7 +80,6 @@
       fortios_firewall_address:
         vdom: "{{ vdom }}"
         state: present
-        access_token: "{{ fortios_access_token }}"
         firewall_address:
           name: "{{ item.name }}"
           comment: "{{ item.comment }}"
@@ -102,7 +96,7 @@
     #   fortios_firewall_service_custom:
     #     vdom: "{{ vdom }}"
     #     state: present
-    #     access_token: "{{ fortios_access_token }}"
+    #     # access_token: "{{ fortios_access_token }}"
     #     firewall_service_custom:
     #       name: "{{ item.name }}"
     #       category: "{{ item.category }}"
@@ -115,7 +109,7 @@
     #   fortios_firewall_service_custom:
     #     vdom: "{{ vdom }}"
     #     state: present
-    #     access_token: "{{ fortios_access_token }}"
+    #     # access_token: "{{ fortios_access_token }}"
     #     firewall_service_custom:
     #       name: "{{ item.name }}"
     #       category: "{{ item.category }}"
@@ -128,7 +122,7 @@
     #   fortios_firewall_service_custom:
     #     vdom: "{{ vdom }}"
     #     state: present
-    #     access_token: "{{ fortios_access_token }}"
+    #     # access_token: "{{ fortios_access_token }}"
     #     firewall_service_custom:
     #       name: "{{ item.name }}"
     #       category: "{{ item.category }}"
