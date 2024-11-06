@@ -17,7 +17,27 @@
       intrazone: "deny"
       name: "untrusted"
 
-- name: Creating VLAN interfaces with DHCP Server Scope
+- name: Connfigure the default internal hardware switch
+  fortios_system_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    system_interface:
+      vdom: "{{ vdom }}"
+      name: "{{ item.name }}"
+      ip: "{{ item.ipaddress }}"
+      allowaccess: "{{ item.allow_access }}"
+      device_identification: "enable"
+      role: "lan"
+      auto_auth_extension_device: "{{ item.auto_auth_device }}"
+      type: "hard-switch"
+  with_list: "{{ interfaces }}"
+  when: 
+    - item.dhcp_type is defined
+    - item.dhcp_type == "scope"
+    - item.type is defined
+    - item.type == "internal"
+
+- name: Creating interfaces with DHCP Server Scope
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
@@ -29,15 +49,17 @@
       device_identification: "enable"
       role: "lan"
       interface: "{{ item.parent_interface }}"
-      vlanid: "{{ item.vlan_id }}"
+      # vlanid: "{{ item.vlan_id }}"
       auto_auth_extension_device: "{{ item.auto_auth_device }}"
       type: "vlan"
   with_list: "{{ interfaces }}"
   when: 
     - item.dhcp_type is defined
     - item.dhcp_type == "scope"
+    - item.type is defined
+    - item.type == "vlan"
 
-- name: Creating VLAN interfaces with DHCP Relay
+- name: Creating interfaces with DHCP Relay
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
@@ -57,6 +79,8 @@
   when: 
     - item.dhcp_type is defined
     - item.dhcp_type == "relay"
+    - item.type is defined
+    - item.type == "vlan"
 
 - name: Creating VLAN interface with no DHCP
   fortios_system_interface:
@@ -74,7 +98,10 @@
       auto_auth_extension_device: "{{ item.auto_auth_device }}"
   with_list: "{{ interfaces }}"
   when: 
-    - item.dhcp_type is not defined
+    - item.dhcp_type is defined
+    - item.dhcp_type == "none"
+    - item.type is defined
+    - item.type == "vlan"
 
 - name: Preparing script to append interfaces to the trusted zone.
   raw: |
@@ -83,7 +110,7 @@
         # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
         # Optionally you can pass some parameters.
         # The character `a` at second line below is to avoid post-login-banner barrier.
-        sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ ansible_host }} <<EOF
+        sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} <<EOF
         a
         # ====================== Edit Your Commands Below =============================================
         config system zone
@@ -111,7 +138,7 @@
         # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
         # Optionally you can pass some parameters.
         # The character `a` at second line below is to avoid post-login-banner barrier.
-        sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ ansible_host }} <<EOF
+        sshpass -p '{{ ansible_password }}' ssh -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }} <<EOF
         a
         # ====================== Edit Your Commands Below =============================================
         config system zone

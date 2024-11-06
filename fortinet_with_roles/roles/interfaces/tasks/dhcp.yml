@@ -11,7 +11,7 @@
       interface: "{{ item.name }}"
       ip_range:
       -
-        id: "{{ item.vlan_id }}"
+        id: "1"
         start_ip: "{{ item.start_ip }}"
         end_ip: "{{ item.end_ip }}"
       lease_time: "{{ item.lease_time }}"
