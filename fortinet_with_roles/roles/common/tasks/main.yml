@@ -5,6 +5,7 @@
 - import_tasks: application_profile.yml
 - import_tasks: webfilter_profile.yml
 - import_tasks: ips_profile.yml
-- import_tasks: sdwan.yml
+- import_tasks: system_sdwan.yml
+- import_tasks: system_zones.yml
 - import_tasks: default_internet_policy.yml
 - import_tasks: remove_session_helpers.yml

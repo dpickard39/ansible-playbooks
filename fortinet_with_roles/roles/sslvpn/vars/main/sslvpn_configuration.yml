@@ -1,0 +1,55 @@
+---
+## Domain Information ##
+ad_domain: "acdw.local"
+public_domain: "aircapitol.net"
+
+## VPN Authentication Options
+sslvpn_auth_type: "ldap" # Options "ldap" | "radius" | "saml" 
+# Set configure_ldap to yes if you want to configure LDAP in addition to SAML for other services.
+configure_ldap: "yes" 
+
+# Remote Access VPN Variables
+vpn_domain: "vpn.{{ public_domain }}"
+sslvpn_client_start_ip: "10.250.250.2"
+sslvpn_client_end_ip: "10.250.250.254"
+sslvpn_dns_server1: "10.75.30.5"
+# sslvpn_dns_server2: ""
+
+###################################################################################################################
+## If you are using a purchased certificate you will need to use the private_key and the cert_content variables. ##
+## If you have a *.pfx file you will need to use OpenSSL to seperate the certificate and key.                    ##
+## To extract the certificate and key you can use the following commands:                                        ##
+##   openssl pkcs12 -in filename.pfx -clcerts -nokeys -out certificate.pem                                       ##
+##   openssl pkcs12 -in filename.pfx -nocerts -out private_key.pem                                               ##
+##   *** I like to name my certificate as the domain name ie. vpn.mydomain.com  ***                              ##
+## These files must be in Base64 format.                                                                         ##
+###################################################################################################################
+ssl_certificate_type: "self_signed" # Options are "pem" or "acme" or "self_signed"
+cert_content: "{{ lookup( 'file', './files/certificates/certificate.pem') | b64encode }}"
+private_key: "{{ lookup( 'file', './files/certificates/private_key.pem') | b64encode }}"
+private_key_pass: "mypassword"
+
+# LDAP Configuration Variables
+ldap_dn: "DC=acdw,DC=local"
+ldap_server_ip: "10.1.100.2"
+ldap_user: "htldap@acdw.local"
+ldap_pass: "[htt3chnologi3s]"
+ldap_users_group: "Domain Users" 
+ldap_secure: "ldaps" # Options are "none" | "ldaps" | "starttls"
+ldap_port: "636" # Use "636" with ldaps or starttls otherwise use "389"
+
+# Azure SAML Configuration Variables
+azure_tenant_id: "azure_id"
+azure_remote_cert: "{{ lookup( 'file', './files/azure_idp_cert.cer') | b64encode}}"
+
+## This is the certificate that you uploaded to the Azure App Registration > SSO Settings
+# Default is "Fortinet_Factory", note that this certificate is not unique from every other Fortigate
+# It is recommended to use your own certificate, this can be the ACME certificate.
+azure_local_certname: "{{ vpn_domain }}"
+
+## ************ THIS IS REQUIRED FOR AZURE SAML ************
+## You can use the azure_cert.yaml playbook or you can upload the Azure Certificate manually through the GUI.
+## You will have to have the name of the remote certificate that is auto assigned by the Fortigate.
+## You can find the name of the certificate in System > Certifiactes under Remote Certicate
+## The certificate will be issues by "Microsoft Azure Federated SSO Certificate"
+azure_remote_certname: "Azure_Remote_Certificate"

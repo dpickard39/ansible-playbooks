@@ -1,0 +1,22 @@
+---
+## Creates the trusted and untrusted zones. The trusted zone will allow interface
+## members to communicate with each other without a firewall policy.
+## Interraces can be easily moved between zones.
+
+- name: Create the trusted zone.
+  fortios_system_zone:
+    vdom: "{{ vdom }}"
+    state: present
+    system_zone:
+      description: "Inter-VLAN routing is allowed."
+      intrazone: "allow"
+      name: "trusted"
+
+- name: Create the untrusted zone.
+  fortios_system_zone:
+    vdom: "{{ vdom }}"
+    state: present
+    system_zone:
+      description: "Inter-VLAN routing is denied."
+      intrazone: "deny"
+      name: "untrusted"

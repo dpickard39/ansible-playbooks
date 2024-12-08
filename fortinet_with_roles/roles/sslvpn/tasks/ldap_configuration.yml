@@ -1,0 +1,35 @@
+---
+- name: Configure the LDAP server settngs.
+  fortios_user_ldap:
+    vdom: "{{ vdom }}"
+    state: present
+    user_ldap:
+      name: "AD LDAP"
+      server: "{{ ldap_server_ip }}"
+      server_identity_check: "disable"
+      cnid: "sAMAccountName"
+      dn: "{{ ldap_dn }}"
+      type: "regular"
+      username: "{{ ldap_user }}"
+      password: "{{ ldap_pass }}"
+      secure: "{{ ldap_secure }}"
+      port: "{{ ldap_port }}"
+  when: sslvpn_auth_type == "ldap" or configure_ldap == "yes"
+
+- name: Creating the SSLVPN_Users group for SSLVPN authentication.
+  fortios_user_group:
+    vdom: "{{ vdom }}"
+    state: present
+    user_group:
+      name: "SSLVPN_Users"
+      match:
+        -
+        group_name: "{{ ldap_group_name }}"
+        id: "10"
+        server_name: "AD LDAP"
+      member:
+        - 
+        name: "AD LDAP"
+  when: sslvpn_auth_type == "ldap"
+
+      

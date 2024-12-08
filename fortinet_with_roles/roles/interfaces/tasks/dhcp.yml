@@ -1,12 +1,12 @@
 ---
-- name: Creating DHCP Servers for VLAN interfaces
+- name: Creating DHCP Servers for interfaces
   fortios_system_dhcp_server:
     vdom: "{{ vdom }}"
     state: present
     system_dhcp_server:
       id: "{{ item.vlan_id }}"
       domain: "{{ item.domain }}"
-      default_gateway: "{{ item.ipaddress }}"
+      default_gateway: "{{ item.gateway }}"
       netmask: "255.255.255.0"
       interface: "{{ item.name }}"
       ip_range:
@@ -23,3 +23,17 @@
   when: 
     - item.dhcp_type is defined
     - item.dhcp_type == "scope"
+
+- name: Update Interface with DHCP Relay
+  fortios_system_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    system_interface:
+      vdom: "{{ vdom }}"
+      name: "{{ item.name }}"
+      dhcp_relay_service: "enable"
+      dhcp_relay_ip: "{{ item.relay_ip }}"
+  with_list: "{{ interfaces }}"
+  when: 
+    - item.dhcp_type is defined
+    - item.dhcp_type == "relay"

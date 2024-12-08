@@ -2,8 +2,10 @@
 - name: Fortigate Configuration
   hosts: fortigates
   collections:
-    - fortinet.fortios  
+  - fortinet.fortios
   connection: httpapi
   gather_facts: False
   roles:
+    - common
     - interfaces
+    - sslvpn

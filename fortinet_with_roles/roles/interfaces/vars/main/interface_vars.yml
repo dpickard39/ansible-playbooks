@@ -1,0 +1,65 @@
+---
+########################################################################################################################
+##  Fortilink VLAN interface settings                                                                                 ##
+##                                                                                                                    ##
+##  vlan_id: 2-4086                                                                                                   ##
+##  allow_access: use comma seperated list with no spaces, choices: ping, https, ssh, snmp, http, telnet, fgfm,       ##
+##  radius-acct, probe-response, fabric, ftm, speed-test, capwap                                                      ##
+##  dhcp_type: scope, relay, none                                                                                           ##
+##  start_ip: specify the 4th octect only, the rest of the ip is built by other variables.                            ##
+##  end_ip: specify the 4th octect only, the rest of the ip is built by other variables.                              ##
+##  gateway: specify the 4th octect only, the rest of the ip is built by other variables.                             ##
+##  lease_time: specify number of seconds, common lengths, 604800 (1 Week), 28800 (8 hours, typical for wireless)     ##
+##  domain: specify the domain, used to append a dns-suffix                                                           ##
+##                                                                                                                    ##
+########################################################################################################################
+
+## Planned changes will incorporate variables from the vars file.
+
+interfaces:
+## The internal interface is the default interface on the FortiGate 60,70, and 80 series.
+  - name: "port3"
+    vlanid: "1"
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    auto_auth_device: "enable"
+    ipaddress: "10.1.200.1/24"
+    dhcp_type: "scope"
+    relay_ip: ""
+    start_ip: "10.1.200.21"
+    end_ip: "10.1.200.200"
+    gateway: "10.1.200.1"
+    lease_time: 604800
+    dns_server1: 10.1.100.2
+    dns_server2: 10.1.100.3
+    domain: "acdw.net"
+    type: "physical"
+    zone: "trusted"
+
+  - name: "VLAN_80"
+    vlan_id: "80"
+    allow_access: "ping,https,ssh,snmp,fgfm"
+    auto_auth_device: "disable"
+    ipaddress: "10.1.80.1/24"
+    parent_interface: "port3"
+    dhcp_type: "none"
+    type: "vlan"
+    zone: "trusted"
+
+  - name: "VLAN_100"
+    vlan_id: "100"
+    allow_access: "ping"
+    auto_auth_device: "disable"
+    ipaddress: "10.1.100.1/24"
+    parent_interface: "port3"
+    dhcp_type: "none"
+    type: "vlan"
+    zone: "trusted"
+  
+  - name: "port8"
+    vlanid: "8"
+    allow_access: "ping,capwap"
+    auto_auth_device: "enable"
+    ipaddress: "192.168.1."
+    dhcp_type: "none"
+    type: "physical"
+    zone: "trusted"

@@ -1,23 +1,5 @@
 ---
-- name: Create the trusted zone.
-  fortios_system_zone:
-    vdom: "{{ vdom }}"
-    state: present
-    system_zone:
-      description: "Inter-VLAN routing is allowed."
-      intrazone: "allow"
-      name: "trusted"
-
-- name: Create the untrusted zone.
-  fortios_system_zone:
-    vdom: "{{ vdom }}"
-    state: present
-    system_zone:
-      description: "Inter-VLAN routing is denied."
-      intrazone: "deny"
-      name: "untrusted"
-
-- name: Connfigure the default internal hardware switch
+- name: Connfigure the default switch (internal)
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
@@ -32,12 +14,28 @@
       type: "hard-switch"
   with_list: "{{ interfaces }}"
   when: 
-    - item.dhcp_type is defined
-    - item.dhcp_type == "scope"
     - item.type is defined
     - item.type == "internal"
 
-- name: Creating interfaces with DHCP Server Scope
+- name: Configure Physical Interfaces
+  fortios_system_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    system_interface:
+      vdom: "{{ vdom }}"
+      name: "{{ item.name }}"
+      ip: "{{ item.ipaddress }}"
+      allowaccess: "{{ item.allow_access }}"
+      device_identification: "enable"
+      role: "lan"
+      auto_auth_extension_device: "{{ item.auto_auth_device }}"
+      type: "physical"
+  with_list: "{{ interfaces }}"
+  when: 
+    - item.type is defined
+    - item.type == "physical"
+
+- name: Create VLAN interfaces
   fortios_system_interface:
     vdom: "{{ vdom }}"
     state: present
@@ -49,59 +47,36 @@
       device_identification: "enable"
       role: "lan"
       interface: "{{ item.parent_interface }}"
-      # vlanid: "{{ item.vlan_id }}"
+      vlanid: "{{ item.vlan_id }}"
       auto_auth_extension_device: "{{ item.auto_auth_device }}"
       type: "vlan"
   with_list: "{{ interfaces }}"
   when: 
-    - item.dhcp_type is defined
-    - item.dhcp_type == "scope"
     - item.type is defined
     - item.type == "vlan"
 
-- name: Creating interfaces with DHCP Relay
-  fortios_system_interface:
-    vdom: "{{ vdom }}"
-    state: present
-    system_interface:
-      vdom: "{{ vdom }}"
-      name: "{{ item.name }}"
-      ip: "{{ item.ipaddress }}"
-      allowaccess: "{{ item.allow_access }}"
-      dhcp_relay_service: "enable"
-      dhcp_relay_ip: "{{ item.relay_ip }}"
-      device_identification: "enable"
-      role: "lan"
-      interface: "{{ item.parent_interface }}"
-      vlanid: "{{ item.vlan_id }}"
-      auto_auth_extension_device: "{{ item.auto_auth_device }}"
-  with_list: "{{ interfaces }}"
-  when: 
-    - item.dhcp_type is defined
-    - item.dhcp_type == "relay"
-    - item.type is defined
-    - item.type == "vlan"
-
-- name: Creating VLAN interface with no DHCP
-  fortios_system_interface:
-    vdom: "{{ vdom }}"
-    state: present
-    system_interface:
-      vdom: "{{ vdom }}"
-      name: "{{ item.name }}"
-      ip: "{{ item.ipaddress }}"
-      allowaccess: "{{ item.allow_access }}"
-      device_identification: "enable"
-      role: "lan"
-      interface: "{{ item.parent_interface }}"
-      vlanid: "{{ item.vlan_id }}"
-      auto_auth_extension_device: "{{ item.auto_auth_device }}"
-  with_list: "{{ interfaces }}"
-  when: 
-    - item.dhcp_type is defined
-    - item.dhcp_type == "none"
-    - item.type is defined
-    - item.type == "vlan"
+# - name: Create VLAN interfaces with DHCP Relay
+#   fortios_system_interface:
+#     vdom: "{{ vdom }}"
+#     state: present
+#     system_interface:
+#       vdom: "{{ vdom }}"
+#       name: "{{ item.name }}"
+#       ip: "{{ item.ipaddress }}"
+#       allowaccess: "{{ item.allow_access }}"
+#       dhcp_relay_service: "enable"
+#       dhcp_relay_ip: "{{ item.relay_ip }}"
+#       device_identification: "enable"
+#       role: "lan"
+#       interface: "{{ item.parent_interface }}"
+#       vlanid: "{{ item.vlan_id }}"
+#       auto_auth_extension_device: "{{ item.auto_auth_device }}"
+#   with_list: "{{ interfaces }}"
+#   when: 
+#     - item.dhcp_type is defined
+#     - item.dhcp_type == "relay"
+#     - item.type is defined
+#     - item.type == "vlan"
 
 - name: Preparing script to append interfaces to the trusted zone.
   raw: |
@@ -128,7 +103,8 @@
   args:
     executable: /bin/bash
   with_list:  "{{ interfaces }}"
-  when: 
+  when:
+    - item.zone is defined
     - item.zone == "trusted"
 
 - name: Preparing script to append interfaces to the untrusted zone.
@@ -158,4 +134,5 @@
     executable: /bin/bash
   with_list:  "{{ interfaces }}"
   when: 
+    - item.zone is defined
     - item.zone == "untrusted"

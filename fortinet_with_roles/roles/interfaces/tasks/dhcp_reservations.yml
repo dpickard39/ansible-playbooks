@@ -1,0 +1,44 @@
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars_files:
+    - "customers/{{ customer }}/vars.yml"
+  vars:
+  tasks:
+    - name: Register Allowed URLs from CSV file
+      read_csv:
+        path: ./files/dhcp_reservations.csv
+      register: reserved
+
+    - name: Prepare The Shell Script to create the DHCP Reservaton
+      raw: |
+            cat > {{script_path }} << EOF_OUTER
+            # /bin/bash
+            # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+            # Optionally you can pass some parameters.
+            # The character `a` at second line below is to avoid post-login-banner barrier.
+            sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ ansible_host }} <<EOF
+            a
+            # ====================== Edit Your Commands Below =============================================
+            config system dhcp server
+            edit '11'
+            config reserved-address
+            edit '\$1'
+            set ip '\$2'
+            set mac '\$3'
+            end
+            # ==============================================================================================
+            EOF
+            EOF_OUTER
+
+
+    - name: Create the DHCP Reservations
+      raw: |
+            chmod +x {{ script_path }} && {{ script_path }} '{{ item.id }}' '{{ item.ip }}' '{{ item.mac }}'
+      args:
+        executable: /bin/bash
+      with_items: "{{ reserved.list }}"
+
+
