@@ -3,9 +3,6 @@
     - fortinet.fortios
   connection: httpapi
   gather_facts: no
-  vars_files:
-    - "customers/{{ customer }}/vars.yml"
-  vars:
   tasks:
     - name: Register Allowed URLs from CSV file
       read_csv:
