@@ -541,6 +541,21 @@
               id: "97"
               category: "97"
               action: "monitor"
+             -
+              # Artificial Intelligence Technology
+              id: "100"
+              category: "100"
+              action: "monitor"
+             -
+              # Cryptocurrency
+              id: "101"
+              category: "101"
+              action: "monitor"
+             -
+              # Unrated
+              id: "102"
+              category: "102"
+              action: "monitor"
              - 
               ##############################
               ###### Local Categories ######

@@ -9,3 +9,5 @@
 - import_tasks: system_zones.yml
 - import_tasks: default_internet_policy.yml
 - import_tasks: remove_session_helpers.yml
+- import_tasks: firewall_local_in.yml
+- import_tasks: custom_fortiguard_block_page.yml

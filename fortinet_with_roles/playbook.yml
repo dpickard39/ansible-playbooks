@@ -7,5 +7,5 @@
   gather_facts: False
   roles:
     - common
-    - interfaces
-    - sslvpn
+    # - interfaces
+    # - sslvpn

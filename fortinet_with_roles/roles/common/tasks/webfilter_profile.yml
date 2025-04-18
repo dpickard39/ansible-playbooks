@@ -54,6 +54,7 @@
         blocklist: "enable"
       options: "block-invalid-url"
       ftgd_wf:
+        options: "error-allow"
         filters:
           ################################
           ###### Potentially Liable ######
@@ -79,7 +80,7 @@
             category: "5"
             action: "block"
           -
-          # Explicit violence
+          # Explicit Violence
             id: "6"
             category: "6"
             action: "block"
@@ -99,7 +100,7 @@
             category: "62"
             action: "monitor"
           - 
-          # Child abuse
+          # Child Sexual Abuse
             id: "83"
             category: "83"
             action: "block"
@@ -123,7 +124,7 @@
           ###### Adult/Mature Content ######
           ##################################
           -
-          # Alternative beliefs
+          # Alternative Beliefs
             id: "2"
             category: "2" 
             action: "monitor"
@@ -133,7 +134,7 @@
             category: "7"
             action: "monitor"
           -
-          # Other adult materials
+          # Other Adult Materials
             id: "8"
             category: "8"
             action: "monitor"
@@ -163,7 +164,7 @@
             category: "15"
             action: "monitor"
           -
-          # Weapons (sales)
+          # Weapons (Sales)
             id: "16"
             category: "16"
             action: "block"
@@ -173,7 +174,7 @@
             category: "57"
             action: "block"
           - 
-          # Sex education
+          # Sex Education
             id: "63"
             category: "63"
             action: "block"
@@ -188,12 +189,12 @@
             category: "65"
             action: "block"
           - 
-          # Lingerie and swimsuit
+          # Lingerie and Swimsuit
             id: "66"
             category: "66"
             action: "block"
           - 
-          # Sports hunting and war games
+          # Sports Hunting and War Games
             id: "67"
             category: "67"
             action: "block"
@@ -212,22 +213,22 @@
             category: "24"
             action: "monitor"
           - 
-          # Streaming media and download
+          # Streaming Media and Download
             id: "25"
             category: "25"
             action: "monitor"
           -
-          # Peer-to-peer file sharing
+          # Peer-to-peer File Sharing
             id: "72"
             category: "72"
             action: "block"
           - 
-          # Internet radio and TV
+          # Internet Radio and TV
             id: "75"
             category: "75"
             action: "monitor"
           - 
-          # Internet telephony
+          # Internet Telephony
             id: "76"
             category: "76"
             action: "monitor"
@@ -236,7 +237,7 @@
           ###### Security Risk ######
           ###########################
           -
-          # Malicious websites
+          # Malicious Websites
             id: "26"
             category: "26"
             action: "block"
@@ -256,12 +257,12 @@
             category: "88"
             action: "monitor"
           - 
-          # Newly observed domain
+          # Newly Observed Domain
             id: "90"
             category: "90"
             action: "monitor"
           - 
-          # Newly registered domain
+          # Newly Registered Domain
             id: "91"
             category: "91"
             action: "monitor"
@@ -295,7 +296,7 @@
             category: "28"
             action: "monitor"
           - 
-          # Arts and culture
+          # Arts and Culture
             id: "29"
             category: "29"
             action: "monitor"
@@ -340,7 +341,7 @@
             category: "39"
             action: "monitor"
           - 
-          # Global religion
+          # Global Religion
             id: "40"
             category: "40"
             action: "monitor"
@@ -365,17 +366,17 @@
             category: "47"
             action: "monitor"
           - 
-          # Personal vehicles
+          # Personal Vehicles
             id: "48"
             category: "48"
             action: "monitor"
           - 
-          # Dynamic content
+          # Dynamic Content
             id: "54"
             category: "54"
             action: "monitor"
           - 
-          # Meaningless content
+          # Meaningless Content
             id: "55"
             category: "55"
             action: "monitor"
@@ -385,57 +386,57 @@
             category: "58"
             action: "monitor"
           - 
-          # Web chat
+          # Web Chat
             id: "68"
             category: "68"
             action: "monitor"
           - 
-          # Instant messaging
+          # Instant Messaging
             id: "69"
             category: "69"
             action: "monitor"
           - 
-          # Newsgroups and message boards
+          # Newsgroups and Message Boards
             id: "70"
             category: "70"
             action: "monitor"
           - 
-          # Digital postcards
+          # Digital Postcards
             id: "71"
             category: "71"
             action: "monitor"
           - 
-          # Child education
+          # Child Education
             id: "77"
             category: "77"
             action: "monitor"
           - 
-          # Real estate
+          # Real Estate
             id: "78"
             category: "78"
             action: "monitor"
           - 
-          # Restaurant and dining
+          # Restaurant and Dining
             id: "79"
             category: "79"
             action: "monitor"
           -
-          # Personal websites and blogs
+          # Personal Websites and Blogs
             id: "80"
             category: "80"
             action: "monitor"
           - 
-          # Content servers
+          # Content Servers
             id: "82"
             category: "82"
             action: "monitor"
           - 
-          # Domain parking
+          # Domain Parking
             id: "85"
             category: "85"
             action: "monitor"
           - 
-          # Personal privacy
+          # Personal Privacy
             id: "87"
             category: "87"
             action: "monitor"
@@ -454,12 +455,12 @@
             category: "31"
             action: "monitor"
           - 
-          # Search engines and portals
+          # Search Engines and Portals
             id: "41"
             category: "41"
             action: "monitor"
           - 
-          # General organizations
+          # General Organizations
             id: "43"
             category: "43"
             action: "monitor"
@@ -469,22 +470,22 @@
             category: "49"
             action: "monitor"
           - 
-          # Information and computer security
+          # Information and Computer Security
             id: "50"
             category: "50"
             action: "monitor"
           - 
-          # Government and legal organizations
+          # Government and Legal Organizations
             id: "51"
             category: "51"
             action: "monitor"
           - 
-          # Information technology
+          # Information Technology
             id: "52"
             category: "52"
             action: "monitor"
           - 
-          # Armed forces
+          # Armed Forces
             id: "53"
             category: "53"
             action: "monitor"
@@ -494,32 +495,32 @@
             category: "56"
             action: "monitor"
           - 
-          # Secure websites
+          # Secure Websites
             id: "81"
             category: "81"
             action: "monitor"
           - 
-          # Web-based applications
+          # Web-based Applications
             id: "84"
             category: "84"
             action: "monitor"
           - 
-          # Charitable organizations
+          # Charitable Organizations
             id: "92"
             category: "92"
             action: "monitor"
           - 
-          # Remote access
+          # Remote Access
             id: "93"
             category: "93"
             action: "monitor" 
           - 
-          # Web analytics
+          # Web Analytics
             id: "94"
             category: "94"
             action: "monitor"
           - 
-          # Online meeting
+          # Online Meeting
             id: "95"
             category: "95"
             action: "monitor"
@@ -569,7 +570,7 @@
           -
           # Unrated
             id: "102"
-            category: "102"
+            category: "0"
             action: "monitor"
 
 # - name: Prepare shell script to enable the webfilter in the GUI

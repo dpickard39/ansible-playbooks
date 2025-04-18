@@ -1,0 +1,77 @@
+---
+- hosts: fortigates
+  collections:
+    - fortinet.fortios
+  connection: httpapi
+  gather_facts: no
+  vars:
+  tasks:
+    - name: Create the fm.hightouchinc.com address object
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_address:
+          name: "fm.hightouchinc.com"
+          subnet: "162.250.225.68 255.255.255.255"
+          type: "ipmask"
+
+    - name: Create the fmg.hightouchinc.com address object
+      fortios_firewall_address:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_address:
+          name: "fmg.hightouchinc.com"
+          subnet: "162.250.225.89 255.255.255.255"
+          type: "ipmask"
+
+    - name: Create the FMG-Allowed address group
+      fortios_firewall_addrgrp:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_addrgrp:
+          name: "FMG-Allowed"
+          member: 
+            - name: "fm.hightouchinc.com"
+            - name: "fmg.hightouchinc.com"
+
+    - name: Create FortiManager Service object
+      fortios_firewall_service_custom:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_service_custom:
+          name: "FMG-Service"
+          tcp_portrange: 541
+
+    - name: Create Local-In Policy to allow HighTouch FMG
+      fortios_firewall_local_in_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_local_in_policy:
+          policyid: 1
+          intf_dict:
+            - name: "virtual-wan-link"
+          srcaddr:
+            - name: "FMG-Allowed"
+          dstaddr: 
+            - name: "all"
+          action: "accept"
+          service: 
+            - name: "FMG-Service"
+          schedule: "always"
+
+    - name: Create Local-In Policy to deny FMG traffic
+      fortios_firewall_local_in_policy:
+        vdom: "{{ vdom }}"
+        state: present
+        firewall_local_in_policy:
+          policyid: 2
+          intf_dict:
+            - name: "virtual-wan-link"
+          srcaddr:
+            - name: "all"
+          dstaddr: 
+            - name: "all"
+          action: "deny"
+          service: 
+            - name: "FMG-Service"
+          schedule: "always"
