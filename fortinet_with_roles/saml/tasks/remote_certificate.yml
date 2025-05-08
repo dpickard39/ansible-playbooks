@@ -1,0 +1,30 @@
+- name: Importing the EntraID remote certificate.
+  fortios_monitor:
+    vdom:  "{{ vdom }}"
+    enable_log: true
+    selector: 'import.vpn-certificate.remote'
+    params:
+      scope: "global"
+      file_content: "{{ azure_remote_cert }}"
+
+- name: Preparing to install the Microsoft EntraID remote certificate.
+  raw: |
+          cat > {{ script_path }} << EOF_OUTER
+          # /bin/bash
+          # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+          # Optionally you can pass some parameters.
+          # The character `a` at second line below is to avoid post-login-banner barrier.
+          sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ ansible_host }} <<EOF
+          a
+          # ====================== Edit Your Commands Below =============================================
+          config vpn certificate remote
+          rename REMOTE_Cert_1 to EntraID_Remote_Certificate
+          # ==============================================================================================
+          EOF
+          EOF_OUTER
+
+- name: Renaming the EntraID to EntraID_Remote_Certificate
+  raw: |
+          chmod +x {{ script_path }} && {{ script_path }}
+  args:
+    executable: /bin/bash

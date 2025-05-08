@@ -6,6 +6,12 @@
   connection: httpapi
   gather_facts: False
   roles:
-    - common
-    # - interfaces
-    # - sslvpn
+    - role: common
+    - role: interfaces
+      when:
+        - interfaces is defined 
+        - interfaces = true
+    - role: clientvpn
+      when:
+        - clientvpn is defined 
+        - clientvpn = true

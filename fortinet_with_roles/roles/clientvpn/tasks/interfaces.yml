@@ -1,0 +1,42 @@
+---
+- name: Configure IPSec Phase 1 Interface
+  fortios_vpn_ipsec_phase1_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    vpn_ipsec_phase1_interface:
+      name: "FortiClient"
+      type: dynamic
+      interface: wan1
+      ike_version: 2
+      peertype: any
+      net_device: disable
+      mode_cfg: enable
+      ipv4_dns_server1: "10.75.30.6"
+      proposal: 
+          - aes256-sha256
+          - aes256gcm-prfsha256
+      dpd: on-idle
+      dhgrp: 21
+      eap: enable
+      eap_identity: send-request
+      assign_ip_from: name
+      ipv4_split_include: "LAB_SUPERNET"
+      ipv4_name: "IPSEC_TUNNEL_ADDR1"
+      save_password: enable
+      client_auto_negotiate: enable
+      psksecret: "{{ pre_shared_key }}"
+      dpd_retryinterval: 60
+  when: peer_type == "clientvpn"
+  
+- name: Configure IPSec Phase 2 Interface
+  fortios_vpn_ipsec_phase2_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    vpn_ipsec_phase2_interface:
+      name: "FortiClient"
+      phase1name: "FortiClient"
+      proposal:
+          - aes256-sha256
+          - aes256gcm
+      dhgrp: 14
+  when: peer_type == "clientvpn"
