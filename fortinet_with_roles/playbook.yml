@@ -2,16 +2,22 @@
 - name: Fortigate Configuration
   hosts: fortigates
   collections:
-  - fortinet.fortios
+    - fortinet.fortios
   connection: httpapi
   gather_facts: False
+
   roles:
-    - role: common
-    - role: interfaces
-      when:
-        - interfaces is defined 
-        - interfaces = true
+    # - role: common
+    # - role: interfaces
+    #   when:
+    #     - interfaces is defined 
+    #     - interfaces == true
+    # - role: clientvpn
+    #   when:
+    #     - clientvpn is defined 
+    #     - clientvpn == true
+    # - role: policies
+    #   when:
+    #     - policies is defined
+    #     - policies == true
     - role: clientvpn
-      when:
-        - clientvpn is defined 
-        - clientvpn = true

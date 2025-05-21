@@ -1,2 +1,19 @@
 ---
-# vars file for ipsec
+#### Specify the name of the existing SSLVPN policy ####
+sslvpn_firewall_policy: "SSLVPN"
+
+#### Auth IKE SAML Port ####
+auth_ike_saml_port: 443
+
+#### DNS Server ####
+dns_server1: "10.75.30.6"
+
+#### Client VPN IP Range ####
+start_ip: "10.212.134.200"
+end_ip: "10.212.134.210"
+
+#### SAML Server ####
+saml_server: "EntraID"
+
+#### Pre-Shared-Key ####
+pre_shared_key: "jekfa4-wehzuz-quCfiz"

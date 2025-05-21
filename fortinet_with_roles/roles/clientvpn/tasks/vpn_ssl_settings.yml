@@ -1,0 +1,6 @@
+---
+- name: Disable SSLVPN
+  fortios_vpn_ssl_settings:
+    vdom: "{{ vdom }}"
+    vpn_ssl_settings:
+      status: disable

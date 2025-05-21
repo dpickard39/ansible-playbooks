@@ -1,2 +1,6 @@
 ---
+- import_tasks: vpn_ssl_settings.yml
+- import_tasks: firewall_address.yml
+- import_tasks: system_global.yml 
 - import_tasks: interfaces.yml
+- import_tasks: firewall_policy.yml

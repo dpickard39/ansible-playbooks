@@ -1,0 +1,10 @@
+---
+#### DNS Server ####
+dns_server1: "10.75.30.6"
+
+#### Client VPN IP Range ####
+start_ip: "10.212.134.200"
+end_ip: "10.212.134.210"
+
+#### SAML Server ####
+saml_server: "EntraID" 

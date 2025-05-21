@@ -1,0 +1,4 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for policies
+- import_tasks: firewall_address.yml

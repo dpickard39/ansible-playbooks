@@ -1,0 +1,41 @@
+---
+- name: Gather the SSLVPN Firewall Policy
+  fortinet.fortios.fortios_configuration_fact:
+    vdom: "{{ vdom }}"
+    selector: 'firewall_policy'
+    filters:
+      - name=="{{ sslvpn_firewall_policy }}"
+  register: policy
+
+- name: Remove the SSLVPN Policy
+  fortios_firewall_policy:
+    vdom: "{{ vdom }}"
+    state: absent
+    firewall_policy:
+      policyid: "{{ policy.meta.results.0['policyid'] }}"
+  when: policyid is defined
+
+- name: Create firewall policy to allow VPN access to internal
+  fortios_firewall_policy:
+    vdom: "{{ vdom }}"
+    state: present
+    firewall_policy:
+      name: "FortiClient"
+      action: "accept"
+      srcintf:
+        - name: "FortiClient"
+      dstintf:
+        - name: "{{ policy.meta.results.0['dstintf'].0.name }}"
+      srcaddr:
+        - name: "IPSEC_TUNNEL_ADDR1"
+      dstaddr:
+        - name: "{{ policy.meta.results.0['dstaddr'].0.name }}"
+      schedule: "always"
+      service:
+        - name: "ALL"
+      logtraffic: "all"
+      logtraffic_start: "enable"
+      nat: "enable"
+      groups:
+        - name: "{{ policy.meta.results.0['groups'].0.name }}"
+      policyid: "{{ policy.meta.results.0['policyid'] }}"

@@ -1,0 +1,7 @@
+---
+- name: Configure Fortigate Global Settings
+  fortios_system_global:
+    vdom: "{{ vdom }}"
+    system_global:
+      auth_ike_saml_port: "{{ auth_ike_saml_port }}"
+      remoteauthtimeout: 120

@@ -7,18 +7,15 @@
   collections:
     - fortinet.fortios
   connection: httpapi
-  vars_files:
-    - "customers/{{ customer }}/vars.yml"
-  vars:
   tasks:
     - name: Gather firewall policy information
       fortios_configuration_fact:
         vdom: "{{ vdom }}"
-        selector: 'firewall_policy'
+        selector: 'firewall_address'
         filters:
-          - name=="IPSEC_Access"
-      register: policies
+          - name=="SSLVPN_TUNNEL_ADDR1"
+      register: address_object
 
     - debug:
-        msg: "{{ policies.meta.results.0['dstintf'].0.name }}"
+        msg: "{{ address_object.meta.results.0['start-ip'] }}"
         #msg: "{{ ( policies.meta.results | sort(attribute='policyid') | last).policyid +1 }}"

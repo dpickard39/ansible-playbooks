@@ -1,4 +1,13 @@
 ---
+- name: Creating Fortilink VLAN interfaces with DHCP Server Scope
+  fortios_system_interface:
+    vdom: "{{ vdom }}"
+    state: present
+    system_interface:
+      vdom: "{{ vdom }}"
+      name: "{{ wan1_interface }}"
+      ike_saml_server: "{{ saml_server }}"
+
 - name: Configure IPSec Phase 1 Interface
   fortios_vpn_ipsec_phase1_interface:
     vdom: "{{ vdom }}"
@@ -6,12 +15,12 @@
     vpn_ipsec_phase1_interface:
       name: "FortiClient"
       type: dynamic
-      interface: wan1
+      interface: "{{ wan1_interface }}"
       ike_version: 2
       peertype: any
       net_device: disable
       mode_cfg: enable
-      ipv4_dns_server1: "10.75.30.6"
+      ipv4_dns_server1: "{{ dns_server1 }}"
       proposal: 
           - aes256-sha256
           - aes256gcm-prfsha256
@@ -25,8 +34,7 @@
       save_password: enable
       client_auto_negotiate: enable
       psksecret: "{{ pre_shared_key }}"
-      dpd_retryinterval: 60
-  when: peer_type == "clientvpn"
+      dpd_retryinterval: 10
   
 - name: Configure IPSec Phase 2 Interface
   fortios_vpn_ipsec_phase2_interface:
@@ -39,4 +47,3 @@
           - aes256-sha256
           - aes256gcm
       dhgrp: 14
-  when: peer_type == "clientvpn"
